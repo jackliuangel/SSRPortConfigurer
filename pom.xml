@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>securing-web</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>securing-web</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Demo project for Spring Boot， V2Ray and SSR port configureuer</description>
 
 	<properties>
 		<java.version>1.8</java.version>
