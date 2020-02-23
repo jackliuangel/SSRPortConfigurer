@@ -2,6 +2,7 @@ package com.example.securingweb.service;
 
 
 import com.example.securingweb.entity.SSRPortConfig;
+import com.example.securingweb.entity.V2RayServerRootConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
@@ -14,49 +15,49 @@ import java.io.InputStream;
 
 @Component
 @Slf4j
-public class SSRPortService {
-    @Value("${SSR.Path}")
+public class V2RayPortService {
+    @Value("${V2Ray.Path}")
     String path;
 
 
     public Integer readPort() throws Exception {
-        SSRPortConfig SSRPortConfig = readFromFile();
-        return SSRPortConfig.getServer_port();
+        V2RayServerRootConfig v2RayServerRootConfig = readFromFile();
+        return v2RayServerRootConfig.getInbounds().get(0).getPort();
 
     }
 
     public void configPort(Integer newPort) throws Exception {
-        SSRPortConfig SSRPortConfig = readFromFile();
-        SSRPortConfig.setServer_port(newPort);
-        writeFile(SSRPortConfig);
+        V2RayServerRootConfig v2RayServerRootConfig = readFromFile();
+        v2RayServerRootConfig.getInbounds().get(0).setPort(newPort);
+        writeFile(v2RayServerRootConfig);
 
 
     }
 
 
-    private SSRPortConfig readFromFile() throws Exception {
+    private V2RayServerRootConfig readFromFile() throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
 
         // Read JSON file and convert to java object
         InputStream fileInputStream = new FileInputStream(path);
-        SSRPortConfig SSRPortConfig = mapper.readValue(fileInputStream, SSRPortConfig.class);
+        V2RayServerRootConfig v2RayServerRootConfig = mapper.readValue(fileInputStream, V2RayServerRootConfig.class);
         fileInputStream.close();
-        return SSRPortConfig;
+        return v2RayServerRootConfig;
 
     }
 
 
-    private void writeFile(SSRPortConfig newSSRPortConfig) throws Exception {
+    private void writeFile(V2RayServerRootConfig v2RayServerRootConfig) throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
-        String postJson = mapper.writeValueAsString(newSSRPortConfig);
+        String postJson = mapper.writeValueAsString(v2RayServerRootConfig);
         log.info("new config is {}", postJson);
 
         // Save JSON string to file
         FileOutputStream fileOutputStream = new FileOutputStream(path);
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.writeValue(fileOutputStream, newSSRPortConfig);
+        mapper.writeValue(fileOutputStream, v2RayServerRootConfig);
         fileOutputStream.close();
     }
 }

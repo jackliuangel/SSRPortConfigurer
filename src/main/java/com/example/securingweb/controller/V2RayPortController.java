@@ -1,7 +1,7 @@
 package com.example.securingweb.controller;
 
 
-import com.example.securingweb.service.SSRPortService;
+import com.example.securingweb.service.V2RayPortService;
 import com.example.securingweb.utility.CommandUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,19 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/SSR")
-public class SSRPortController {
+@RequestMapping("/V2Ray")
+public class V2RayPortController {
 
     @Autowired
-    SSRPortService ssrPortService;
+    V2RayPortService v2RayPortService;
 
-    @Value("${SSR.Command}")
+    @Value("${V2Ray.Command}")
     String restartCommand;
 
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
-    public String updateSSRPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
-        ssrPortService.configPort(portNumber);
+    public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
+        v2RayPortService.configPort(portNumber);
         String result = CommandUtil.run(restartCommand);
         return restartCommand+ "\n"+ result;
     }
@@ -29,8 +29,8 @@ public class SSRPortController {
 
     @GetMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer getSSRPort() throws Exception {
-        return ssrPortService.readPort();
+    public Integer getV2RayPort() throws Exception {
+        return v2RayPortService.readPort();
 
     }
 

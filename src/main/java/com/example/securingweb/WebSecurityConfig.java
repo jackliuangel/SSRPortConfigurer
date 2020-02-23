@@ -17,7 +17,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/SSRPort").permitAll()
+                .antMatchers("/", "/SSR").permitAll()
+                .antMatchers("/", "/V2Ray").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -45,7 +46,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .roles("USER")
                         .build();
 
+        UserDetails Kelvin =
+                User.withDefaultPasswordEncoder()
+                        .username("kelvin")
+                        .password("force")
+                        .roles("USER")
+                        .build();
 
-        return new InMemoryUserDetailsManager(Jack, Jason);
+        return new InMemoryUserDetailsManager(Jack, Jason, Kelvin);
     }
 }

@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-public class PortConfig {
+public class SSRPortConfig {
     private String server;
     private Integer server_port;
     private String local_address;
