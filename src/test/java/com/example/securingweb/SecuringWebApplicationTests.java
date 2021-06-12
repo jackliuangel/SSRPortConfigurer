@@ -1,8 +1,10 @@
 package com.example.securingweb;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -18,18 +20,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Slf4j
 public class SecuringWebApplicationTests {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@Value("${V2Ray.Command}")
+	String command;
+
 	@Test
 	public void loginWithValidUserThenAuthenticated() throws Exception {
+		log.info("should read from application-test.prop {}", command);
+
 		FormLoginRequestBuilder login = formLogin()
-			.user("user")
-			.password("password");
+			.user("jack")
+			.password("20h");
 
 		mockMvc.perform(login)
-			.andExpect(authenticated().withUsername("user"));
+			.andExpect(authenticated().withUsername("jack"));
 	}
 
 	@Test
@@ -60,5 +68,19 @@ public class SecuringWebApplicationTests {
 	public void accessSecuredResourceAuthenticatedThenOk() throws Exception {
 		mockMvc.perform(get("/hello"))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void testTry(){
+		try{
+			throw new RuntimeException("runtime Exception");
+		}
+		catch (Exception exp){
+			System.err.println("return in catch");
+			return;
+		}
+		finally {
+			System.err.println("return in finally");
+		}
 	}
 }
