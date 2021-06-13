@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class V2RayPortService implements VPNConfig {
-//    @Value("${V2Ray.Path}")
+    //    @Value("${V2Ray.Path}")
     @Value("${V2Ray.Path}")
     String path;
 

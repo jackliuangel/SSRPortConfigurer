@@ -15,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name="user_profile")
 public class UserProfile {
     @Column(nullable = false)
     String name;
@@ -27,7 +28,7 @@ public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Type(type = "pg-uuid")
-    private UUID uuid;
+//    @Type(type = "pg-uuid")
+    private Long uuid;
 
 }

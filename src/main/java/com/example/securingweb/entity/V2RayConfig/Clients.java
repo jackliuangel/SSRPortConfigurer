@@ -1,6 +1,6 @@
 /**
-  * Copyright 2020 bejson.com 
-  */
+ * Copyright 2020 bejson.com
+ */
 package com.example.securingweb.entity.V2RayConfig;
 
 import lombok.Data;

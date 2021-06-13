@@ -1,7 +1,7 @@
 {
-  "server_port" : 1234,
-  "password" : "password",
-  "protocol" : "origin",
-  "obfs" : "http_simple",
-  "method" : "aes-256-cfb"
+  "server_port": 1234,
+  "password": "password",
+  "protocol": "origin",
+  "obfs": "http_simple",
+  "method": "aes-256-cfb"
 }

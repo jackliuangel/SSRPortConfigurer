@@ -27,6 +27,8 @@ public class V2RayPortController {
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
+
+        log.info("V2Ray updateV2RayPort");
         v2RayPortService.configPort(portNumber);
         String result = CommandUtil.run(V2RayRestartCommand);
 //        StringBuilder stringBuilder = new StringBuilder(restartCommand);

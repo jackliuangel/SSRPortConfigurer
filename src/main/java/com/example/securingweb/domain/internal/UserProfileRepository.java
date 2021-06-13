@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> {
-    UserProfile findByUserName(String userName);
+public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
+    UserProfile findByName(String userName);
 }

@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 public class SSRPortService implements VPNConfig {
 
 
-//    @Value("${SSR.Path}")
+    //    @Value("${SSR.Path}")
     @Value("${SSR.Path}")
     String path;
 
 
     public Integer readPort() throws Exception {
+
         SSRPortConfig SSRPortConfig = JsonFileUtil.readFromFile(path, com.example.securingweb.entity.SSRPortConfig.class);
         Integer port = SSRPortConfig.getServer_port();
         log.info("read port = {}", port);

@@ -1,9 +1,8 @@
 /**
-  * Copyright 2020 bejson.com 
-  */
+ * Copyright 2020 bejson.com
+ */
 package com.example.securingweb.entity.V2RayConfig;
 
-import com.example.securingweb.entity.V2RayConfig.Clients;
 import lombok.Data;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.securingweb.config;
+package com.example.securingweb.config.db;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.cfg.AvailableSettings;
@@ -58,7 +58,7 @@ public class InternalDbConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager internalTransactionManger(
+    public PlatformTransactionManager internalTransactionManager(
             @Qualifier("internalEntityManagerFactory") EntityManagerFactory internalEntityManagerFactory
     ) {
         return new JpaTransactionManager(internalEntityManagerFactory);

@@ -1,9 +1,9 @@
-package com.example.securingweb.config;
+package com.example.securingweb.config.security;
 
 import com.example.securingweb.domain.internal.UserProfile;
 import com.example.securingweb.domain.internal.UserProfileRepository;
-import com.example.securingweb.domain.internal.VpnUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,7 +19,12 @@ public class ApplicationJdbcUserDetailsManager implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        UserProfile userProfile = userProfileRepository.findByUserName(name);// name is used as repository ID
-        return new VpnUserDetails(userProfile);
+        UserProfile userProfile = userProfileRepository.findByName(name);// name is used as repository ID
+
+        return User
+                .withUsername(userProfile.getName())
+                .password(userProfile.getPassword())
+                .authorities(userProfile.getAuthority())
+                .build();
     }
 }

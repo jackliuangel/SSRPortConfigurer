@@ -1,20 +1,16 @@
-package com.example.securingweb.config;
+package com.example.securingweb.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
-import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
-
-import static org.springframework.security.config.web.server.SecurityWebFiltersOrder.AUTHENTICATION;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Profile("local")
 @Configuration
@@ -26,8 +22,9 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
                 .authorizeRequests()
-                .antMatchers("/", "/SSR").permitAll()
-                .antMatchers("/", "/V2Ray").permitAll()
+                .antMatchers( "/SSR/**").hasAnyAuthority("admin","viewer")
+                .antMatchers("/V2Ray/**").hasAnyAuthority("admin")
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -38,11 +35,31 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
-   //TODO: add AuthencationWebFilter
+    //TODO: add AuthencationWebFilter
 
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
         return new ApplicationJdbcUserDetailsManager();
     }
+
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authProvider());
+    }
+
+
 }

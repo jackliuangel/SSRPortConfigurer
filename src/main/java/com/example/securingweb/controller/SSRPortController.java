@@ -3,6 +3,7 @@ package com.example.securingweb.controller;
 
 import com.example.securingweb.service.SSRPortService;
 import com.example.securingweb.utility.CommandUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/SSR")
+@Slf4j
 public class SSRPortController {
 
     @Autowired
@@ -22,6 +24,8 @@ public class SSRPortController {
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateSSRPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
+
+        log.info("SSR updateV2RayPort");
         ssrPortService.configPort(portNumber);
         String result = CommandUtil.run(SSRRestartCommand);
         return SSRRestartCommand + "\n\n" + result;
@@ -31,6 +35,7 @@ public class SSRPortController {
     @GetMapping("/")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Integer getSSRPort() throws Exception {
+        log.info("SSR getSSRPort");
         return ssrPortService.readPort();
 
     }
