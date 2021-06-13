@@ -43,7 +43,6 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-
         return new ApplicationJdbcUserDetailsManager();
     }
 }
