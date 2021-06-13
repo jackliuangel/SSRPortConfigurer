@@ -12,3 +12,7 @@ src/main/java/com/example/securingweb/entity/V2RayConfig/.DS_Store
 src/test/.DS_Store
 src/test/resources/
 target/
+/.idea/
+.idea/dataSources.local.xml
+.idea/dataSources/
+.idea/httpRequests/
