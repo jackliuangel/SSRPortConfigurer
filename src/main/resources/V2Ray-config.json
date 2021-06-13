@@ -1,0 +1,43 @@
+{
+  "inbounds": [
+    {
+      "port": 5432,
+      "protocol": "",
+      "settings": {
+        "clients": [
+          {
+            "id": "",
+            "level": 0,
+            "alterId": 0
+          }
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "",
+      "settings": {
+        "clients": [
+          {
+            "id": "",
+            "level": 0,
+            "alterId": 0
+          }
+        ]
+      },
+      "tag": ""
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "",
+        "ip": [
+          ""
+        ],
+        "outboundTag": ""
+      }
+    ]
+  }
+}

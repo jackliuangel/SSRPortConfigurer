@@ -1,20 +1,18 @@
 package com.example.securingweb.config.security;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile("local")
-@Configuration
-@EnableWebSecurity
+//@Profile("local")
+//@ConditionalOnMissingBean(name = "com.example.securingweb.config.security.PlainWebSecurityConfig")
+//@Configuration
+//@EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -22,9 +20,9 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
                 .authorizeRequests()
-                .antMatchers( "/SSR/**").hasAnyAuthority("admin","viewer")
-                .antMatchers("/V2Ray/**").hasAnyAuthority("admin")
-                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/SSR/set/**").hasAuthority("admin")
+                .antMatchers("/V2Ray/set/**").hasAuthority("admin")
+                .antMatchers("/actuator/**").hasAuthority("viewer")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
