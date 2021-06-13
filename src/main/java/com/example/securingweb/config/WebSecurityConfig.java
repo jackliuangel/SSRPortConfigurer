@@ -1,4 +1,4 @@
-package com.example.securingweb;
+package com.example.securingweb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .password("force")
                         .roles("USER")
                         .build();
+//TODO: create 2 db instance
+        //TODO: in local, use docker postGreq
+        //TODO: in prod, use localRepository
 
         return new InMemoryUserDetailsManager(Jack, Jason, Kelvin);
     }

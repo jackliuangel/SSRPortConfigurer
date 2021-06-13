@@ -1,9 +1,10 @@
 /**
   * Copyright 2020 bejson.com 
   */
-package com.example.securingweb.entity;
+package com.example.securingweb.entity.V2RayConfig;
 
 import com.example.securingweb.entity.V2RayConfig.Clients;
+import lombok.Data;
 
 import java.util.List;
 
@@ -13,14 +14,9 @@ import java.util.List;
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
+@Data
 public class Settings {
 
     private List<Clients> clients;
-    public void setClients(List<Clients> clients) {
-        this.clients = clients;
-    }
-    public List<Clients> getClients() {
-        return clients;
-    }
 
 }

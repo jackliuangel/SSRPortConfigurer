@@ -15,20 +15,21 @@ public class SSRPortController {
     @Autowired
     SSRPortService ssrPortService;
 
+
     @Value("${SSR.Command}")
-    String restartCommand;
+    String SSRRestartCommand;
 
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateSSRPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
         ssrPortService.configPort(portNumber);
-        String result = CommandUtil.run(restartCommand);
-        return restartCommand+ "\n"+ result;
+        String result = CommandUtil.run(SSRRestartCommand);
+        return SSRRestartCommand + "\n\n" + result;
     }
 
 
     @GetMapping("/")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Integer getSSRPort() throws Exception {
         return ssrPortService.readPort();
 

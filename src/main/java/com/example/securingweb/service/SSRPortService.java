@@ -2,62 +2,41 @@ package com.example.securingweb.service;
 
 
 import com.example.securingweb.entity.SSRPortConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.example.securingweb.entity.VPNConfig;
+import com.example.securingweb.utility.JsonFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-
 @Component
 @Slf4j
-public class SSRPortService {
+public class SSRPortService implements VPNConfig {
+
+
+//    @Value("${SSR.Path}")
     @Value("${SSR.Path}")
     String path;
 
 
     public Integer readPort() throws Exception {
-        SSRPortConfig SSRPortConfig = readFromFile();
-        return SSRPortConfig.getServer_port();
-
+        SSRPortConfig SSRPortConfig = JsonFileUtil.readFromFile(path, com.example.securingweb.entity.SSRPortConfig.class);
+        Integer port = SSRPortConfig.getServer_port();
+        log.info("read port = {}", port);
+        return port;
     }
 
-    public void configPort(Integer newPort) throws Exception {
-        SSRPortConfig SSRPortConfig = readFromFile();
-        SSRPortConfig.setServer_port(newPort);
-        writeFile(SSRPortConfig);
+    public void configPort(Integer newPort) {
+        try {
+            SSRPortConfig ssrPortConfig = JsonFileUtil.readFromFile(path, com.example.securingweb.entity.SSRPortConfig.class);
+            ssrPortConfig.setServer_port(newPort);
 
-
-    }
-
-
-    private SSRPortConfig readFromFile() throws Exception {
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        // Read JSON file and convert to java object
-        InputStream fileInputStream = new FileInputStream(path);
-        SSRPortConfig SSRPortConfig = mapper.readValue(fileInputStream, SSRPortConfig.class);
-        fileInputStream.close();
-        return SSRPortConfig;
-
+            JsonFileUtil.writeFile(ssrPortConfig, path);
+            log.info("write port = {}", ssrPortConfig.getServer_port());
+        } catch (Exception e) {
+            log.error("write port config fails with exception {}", e.toString());
+        }
     }
 
 
-    private void writeFile(SSRPortConfig newSSRPortConfig) throws Exception {
-
-        ObjectMapper mapper = new ObjectMapper();
-        String postJson = mapper.writeValueAsString(newSSRPortConfig);
-        log.info("new config is {}", postJson);
-
-        // Save JSON string to file
-        FileOutputStream fileOutputStream = new FileOutputStream(path);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        mapper.writeValue(fileOutputStream, newSSRPortConfig);
-        fileOutputStream.close();
-    }
 }
 

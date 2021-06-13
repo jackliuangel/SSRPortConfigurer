@@ -4,13 +4,13 @@ package com.example.securingweb.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Slf4j
-public class SSRPortConfig {
+//@EqualsAndHashCode(callSuper = true)
+public class SSRPortConfig implements VPNConfig{
     private String server;
     private Integer server_port;
     private String local_address;

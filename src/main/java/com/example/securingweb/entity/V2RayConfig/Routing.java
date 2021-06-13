@@ -1,7 +1,10 @@
 /**
-  * Copyright 2020 bejson.com 
-  */
+ * Copyright 2020 bejson.com
+ */
 package com.example.securingweb.entity.V2RayConfig;
+
+import lombok.Data;
+
 import java.util.List;
 
 /**
@@ -10,14 +13,9 @@ import java.util.List;
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
+@Data
 public class Routing {
 
     private List<Rules> rules;
-    public void setRules(List<Rules> rules) {
-         this.rules = rules;
-     }
-     public List<Rules> getRules() {
-         return rules;
-     }
 
 }

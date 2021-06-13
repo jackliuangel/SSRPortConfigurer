@@ -17,20 +17,26 @@ public class V2RayPortController {
     @Autowired
     V2RayPortService v2RayPortService;
 
+//    @Value("${V2Ray.Command}")
+//    String restartCommand;
+
     @Value("${V2Ray.Command}")
-    String restartCommand;
+    String V2RayRestartCommand;
+
 
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
         v2RayPortService.configPort(portNumber);
-        String result = CommandUtil.run(restartCommand);
-        return restartCommand+ "\n"+ result;
+        String result = CommandUtil.run(V2RayRestartCommand);
+//        StringBuilder stringBuilder = new StringBuilder(restartCommand);
+//        stringBuilder.append(result);
+        return V2RayRestartCommand + "\n\n" + result;
     }
 
 
     @GetMapping("/")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Integer getV2RayPort() throws Exception {
         log.info("V2Ray getV2RayPort");
         return v2RayPortService.readPort();
