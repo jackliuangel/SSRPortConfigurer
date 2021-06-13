@@ -6,9 +6,9 @@ src/main/.DS_Store
 src/main/java/.DS_Store
 src/main/java/com/.DS_Store
 src/main/java/com/example/.DS_Store
-src/main/java/com/example/securingweb/.DS_Store
-src/main/java/com/example/securingweb/entity/.DS_Store
-src/main/java/com/example/securingweb/entity/V2RayConfig/.DS_Store
+src/main/java/com/securingweb/vpn/.DS_Store
+src/main/java/com/securingweb/vpn/entity/.DS_Store
+src/main/java/com/securingweb/vpn/entity/V2RayConfig/.DS_Store
 src/test/.DS_Store
 src/test/resources/
 target/
