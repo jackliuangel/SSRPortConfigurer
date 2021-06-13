@@ -1,4 +1,4 @@
-package com.example.securingweb.domain;
+package com.example.securingweb.domain.internal;
 
 import lombok.Value;
 import org.springframework.security.core.GrantedAuthority;

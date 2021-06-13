@@ -1,4 +1,4 @@
-package com.example.securingweb.domain;
+package com.example.securingweb.domain.internal;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

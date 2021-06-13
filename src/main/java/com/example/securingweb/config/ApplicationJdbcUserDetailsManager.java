@@ -1,8 +1,8 @@
 package com.example.securingweb.config;
 
-import com.example.securingweb.domain.UserProfile;
-import com.example.securingweb.domain.UserProfileRepository;
-import com.example.securingweb.domain.VpnUserDetails;
+import com.example.securingweb.domain.internal.UserProfile;
+import com.example.securingweb.domain.internal.UserProfileRepository;
+import com.example.securingweb.domain.internal.VpnUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
