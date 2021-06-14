@@ -1,4 +1,5 @@
-`SSR port Configurer`
+`SSR port Configurer` 
+` ver 0.1` 
 
 # Why：
 
