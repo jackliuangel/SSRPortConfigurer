@@ -6,11 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JacksonConfiguration {
-    //TODO: config mapper
-    @Bean("jacksonObjectMapper")
-    public ObjectMapper JacksonObjectInstance() {
-        return new ObjectMapper();
-    }
+//    //TODO: config mapper
+//    @Bean("jacksonObjectMapper")
+//    public ObjectMapper JacksonObjectInstance() {
+//        return new ObjectMapper();
+//    }
+
+    public static ObjectMapper OBJECT_MAPER = new ObjectMapper();
 
 
 }
