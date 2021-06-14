@@ -1,5 +1,9 @@
 package com.securingweb.vpn.config.security;
 
+import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
+import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
+import com.securingweb.vpn.config.security.handler.CustomAuthenticationFailureHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,32 +12,43 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 //@Profile("local")
 //@ConditionalOnMissingBean(name = "PlainWebSecurityConfig")
 //@Configuration
 //@EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    AuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+
+        http.exceptionHandling()
+            .accessDeniedHandler(new CustomAccessDeniedHandler())
+            .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
+        http.csrf().disable()
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
-                .authorizeRequests()
-                .antMatchers("/SSR/set/**").hasAuthority("admin")
-                .antMatchers("/V2Ray/set/**").hasAuthority("admin")
-                .antMatchers("/actuator/**").hasAuthority("viewer")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();
+            .authorizeRequests()
+            .antMatchers("/SSR/set/**").hasAuthority("admin")
+            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
+            .antMatchers("/actuator/**").hasAuthority("viewer")
+            .anyRequest().authenticated()
+            .and()
+            .formLogin()
+            .failureHandler(customAuthenticationFailureHandler)
+            .loginPage("/login")
+            .permitAll()
+            .and()
+            .logout()
+            .permitAll()
+        ;
     }
 
-    //TODO: add AuthencationWebFilter
+
 
     @Bean
     @Override

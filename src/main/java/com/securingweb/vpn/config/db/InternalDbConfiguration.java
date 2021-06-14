@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.SpringBeanContainer;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"com.example.securingweb.domain.internal"},
+        basePackages = {"com.securingweb.vpn.domain.internal"},
         entityManagerFactoryRef = "internalEntityManagerFactory",
         transactionManagerRef = "internalTransactionManager"
 )
@@ -48,7 +49,7 @@ public class InternalDbConfiguration {
         Map<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         LocalContainerEntityManagerFactoryBean emfb = builder.dataSource(dataSource)
-                .packages("com.example.securingweb.domain.internal")
+                .packages("com.securingweb.vpn.domain.internal")
                 .properties(properties)
                 .persistenceUnit("dbInternal")
                 .build();

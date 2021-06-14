@@ -12,7 +12,7 @@ public class JacksonConfiguration {
 //        return new ObjectMapper();
 //    }
 
-    public static ObjectMapper OBJECT_MAPER = new ObjectMapper();
+    public static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 
 }

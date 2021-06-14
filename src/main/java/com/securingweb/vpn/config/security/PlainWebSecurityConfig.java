@@ -1,11 +1,12 @@
 package com.securingweb.vpn.config.security;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
+import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
+import com.securingweb.vpn.config.security.handler.CustomAuthenticationFailureHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,14 +14,23 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 //@Profile("prod")
 @Primary
 @Configuration
 @EnableWebSecurity
 public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    AuthenticationFailureHandler customAuthenticationFailureHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.exceptionHandling()
+            .accessDeniedHandler(new CustomAccessDeniedHandler())
+            .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
         http
                 .csrf().disable()
                 .authorizeRequests()
@@ -30,6 +40,7 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .failureHandler(customAuthenticationFailureHandler)
                 .loginPage("/login")
                 .permitAll()
                 .and()
@@ -63,4 +74,6 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new InMemoryUserDetailsManager(Jack, Jason, Kelvin);
     }
+
+
 }

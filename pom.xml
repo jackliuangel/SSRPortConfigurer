@@ -8,11 +8,11 @@
         <version>2.1.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>securing-web</artifactId>
+    <groupId>com.securing-web</groupId>
+    <artifactId>vpn</artifactId>
     <version>0.0.2-SNAPSHOT</version>
-    <name>securing-web</name>
-    <description>Demo project for Spring Boot， V2Ray and SSR port configureuer</description>
+    <name>vpn-securing-web</name>
+    <description>Security project for Spring Boot， V2Ray and SSR port configureuer</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -73,6 +73,7 @@
             <version>5.3.1</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

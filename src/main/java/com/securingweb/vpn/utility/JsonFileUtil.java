@@ -12,32 +12,30 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import static com.securingweb.vpn.config.JacksonConfiguration.OBJECT_MAPPER;
+
 @Slf4j
 @UtilityClass
 public class JsonFileUtil {
-    @Autowired
-    @Qualifier("jacksonObjectMapper")
-    ObjectMapper objectMapper;
 
     public void writeFile(VPNConfig vpnConfig, String path) throws Exception {
 
-        String postJson = objectMapper.writeValueAsString(vpnConfig);
+        String postJson = OBJECT_MAPPER.writeValueAsString(vpnConfig);
         log.info("VPN config is {}", postJson);
 
         // Save JSON string to file
         FileOutputStream fileOutputStream = new FileOutputStream(path);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        objectMapper.writeValue(fileOutputStream, vpnConfig);
+        OBJECT_MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+        OBJECT_MAPPER.writeValue(fileOutputStream, vpnConfig);
         fileOutputStream.close();
     }
 
     public <T extends VPNConfig> T readFromFile(String path, Class<T> clazz) throws Exception {
 
-        ObjectMapper mapper = new ObjectMapper();
 
         // Read JSON file and convert to java object
         InputStream fileInputStream = new FileInputStream(path);
-        T vpnConfig = mapper.readValue(fileInputStream, clazz);
+        T vpnConfig = OBJECT_MAPPER.readValue(fileInputStream, clazz);
         fileInputStream.close();
         return vpnConfig;
 
