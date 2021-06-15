@@ -2,8 +2,8 @@ package com.securingweb.vpn.config.security;
 
 import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
-import com.securingweb.vpn.config.security.handler.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Override
@@ -34,7 +35,7 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/SSR/set/**").hasAuthority("admin")
+                .antMatchers("/SSR/set/**").hasAuthority("admin")
                 .antMatchers("/V2Ray/set/**").hasAuthority("admin")
                 .antMatchers("/actuator/**").hasAuthority("viewer")
                 .anyRequest().authenticated()
@@ -52,25 +53,26 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public UserDetailsService userDetailsService() {
         UserDetails Jack =
-                User.withDefaultPasswordEncoder()
-                        .username("jack")
+                User
+                        .withUsername("jack")
                         .password("603")
                         .authorities("admin")
                         .build();
 
         UserDetails Jason =
-                User.withDefaultPasswordEncoder()
-                        .username("jason")
+                User
+                        .withUsername("jason")
+//                    .username("jason")
                         .password("603")
                         .authorities("admin")
                         .build();
 
         UserDetails Kelvin =
-                User.withDefaultPasswordEncoder()
-                        .username("angel")
-                        .password("1006")
-                        .authorities("viewer")
-                        .build();
+                User
+                    .withUsername("angel")
+                    .password("1006")
+                    .authorities("viewer")
+                    .build();
 
         return new InMemoryUserDetailsManager(Jack, Jason, Kelvin);
     }
