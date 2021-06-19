@@ -1,0 +1,1 @@
+ docker run --name VPN-port-service-db -e POSTGRES_PASSWORD=admin -e POSTGRES_USER=admin -p 5432:5432 -d postgres

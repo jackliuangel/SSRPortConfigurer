@@ -16,7 +16,6 @@ public class ApplicationJdbcUserDetailsManager implements UserDetailsService {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
-
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         UserProfile userProfile = userProfileRepository.findByName(name);// name is used as repository ID

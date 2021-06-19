@@ -19,7 +19,6 @@ import static com.securingweb.vpn.config.JacksonConfiguration.OBJECT_MAPPER;
 
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-
     @Override
     public void onAuthenticationFailure(
             HttpServletRequest request,

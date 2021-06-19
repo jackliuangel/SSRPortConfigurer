@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-//@Profile("prod")
-@Primary
 @Configuration
 @EnableWebSecurity
 public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
