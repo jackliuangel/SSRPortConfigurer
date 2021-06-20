@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <title>VPN Port configurer with Spring Security </title>
+    <title>VPN port configurer with Spring Security</title>
 </head>
 <body>
-<script>
-    d = new Date();
-    document.body.innerHTML = "<h1>Welcome! Greeting from J</h1>" +
-        "<h2>timestamp: " + d + "</h2>"
+<h1 th:inline="text">Login passed. Hello from J! </h1>
+<script th:inline="javascript">
+    var token = [[${JWTToken}]];
+    console.log(token);
+    localStorage.setItem("token", token);
 </script>
+<p th:text="${JWTToken}">Subject</p>
+
 </body>
 </html>

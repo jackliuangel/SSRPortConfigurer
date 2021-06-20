@@ -21,10 +21,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/").setViewName("home");
-        registry.addViewController("/hello").setViewName("hello");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/jwtLogin").setViewName("jwtLogin");
+//        registry.addViewController("/login").setViewName("login");
+//        registry.addViewController("/jwtLogin").setViewName("jwtLogin");
     }
 
     //for both cases of  with or without db, this controller will handle the authentication exceptions

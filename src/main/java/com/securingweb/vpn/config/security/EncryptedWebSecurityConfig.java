@@ -43,7 +43,6 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
             .authorizeRequests()
-            .antMatchers("/home").permitAll()
             .antMatchers("/").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")

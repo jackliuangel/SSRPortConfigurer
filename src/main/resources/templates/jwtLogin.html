@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +9,13 @@
 </head>
 <body>
 <h1>Sign in to get JWT</h1>
+
 <form method="post" th:action="@{/jwtAuthenticate}">
     <div><label> User Name : <input name="username" type="text"/> </label></div>
     <div><label> Password: <input name="password" type="password"/> </label></div>
     <div><input type="submit" value="Sign In with JWT "/></div>
 </form>
-<p th:text="${message}"></p>
+<!--<p th:text="${message}"></p>-->
+
 </body>
 </html>

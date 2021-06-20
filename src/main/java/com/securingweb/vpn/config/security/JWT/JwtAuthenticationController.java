@@ -1,22 +1,26 @@
 package com.securingweb.vpn.config.security.JWT;
 
 
-import com.securingweb.vpn.config.security.ApplicationJdbcUserDetailsService;
 import com.securingweb.vpn.utility.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * 用于验证 jwt 返回客户端 jwt（json web token）
- * */
-@RestController
+ */
+@Controller
+@Description("it returns model-view instead of pure JSON. ")
 public class JwtAuthenticationController {
 
     @Autowired
@@ -30,26 +34,28 @@ public class JwtAuthenticationController {
 
     /**
      * 获取 客户端来的 username password 使用秘钥加密成 json web token
-     * */
+     */
     @RequestMapping(value = "/jwtAuthenticate", method = RequestMethod.POST)
 //    public String createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-    public String createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
+    public String createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password, Model model) throws Exception {
 
-        JwtRequest authenticationRequest = new JwtRequest(username,password);
+//        JwtRequest authenticationRequest = new JwtRequest(username, password);
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        authenticate(username, password);
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+                .loadUserByUsername(username);
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return token;
+        model.addAttribute("JWTToken", token);
+        //go to home view and then go to home.html
+        return "home";
     }
 
     /**
-     *  获取 客户端来的 username password 使用秘钥加密成 json web token
-     * */
+     * 获取 客户端来的 username password 使用秘钥加密成 json web token
+     */
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

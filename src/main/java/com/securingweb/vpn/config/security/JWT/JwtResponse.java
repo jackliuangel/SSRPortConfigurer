@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serializable;
 
+@Deprecated
 public class JwtResponse implements Serializable {
 
     private static final long serialVersionUID = -8091879091924046844L;

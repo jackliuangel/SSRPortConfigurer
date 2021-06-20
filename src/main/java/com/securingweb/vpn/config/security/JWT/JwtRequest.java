@@ -2,6 +2,7 @@ package com.securingweb.vpn.config.security.JWT;
 
 import java.io.Serializable;
 
+@Deprecated
 public class JwtRequest implements Serializable {
 
     private static final long serialVersionUID = 5926468583005150707L;
