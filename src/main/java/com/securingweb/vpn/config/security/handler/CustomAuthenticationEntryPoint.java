@@ -22,7 +22,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
 
-        //todo your business
         HashMap<String, String> map = new HashMap<>(2);
         map.put("uri", request.getRequestURI());
         map.put("msg", "access resource authentication failed: "+ authException.getMessage());

@@ -30,3 +30,15 @@ In local, run with idea and with postgreSQL (in docker)docker.
 In prod, run by command
 
 `java -jar *.jar`
+
+
+#test and use
+http://localhost:8080/jwtLogin
+http://localhost:8080/login
+http://localhost:8080/V2Ray/
+http://localhost:8080/V2Ray/set/1234
+http://localhost:8080/SSR/
+http://localhost:8080/SSR/set/5432
+
+
+

@@ -19,7 +19,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
 
 
-        //todo your business
         HashMap<String, String> map = new HashMap<>(2);
         map.put("uri", request.getRequestURI());
         map.put("msg", "authorization failed: "+ accessDeniedException);
