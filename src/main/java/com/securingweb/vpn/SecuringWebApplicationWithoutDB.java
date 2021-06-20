@@ -3,7 +3,7 @@ package com.securingweb.vpn;
 import com.securingweb.vpn.config.db.CommonDbConfiguration;
 import com.securingweb.vpn.config.db.InternalDbConfiguration;
 import com.securingweb.vpn.config.security.EncryptedWebSecurityConfig;
-import com.securingweb.vpn.config.security.JWT.JwtAuthenticationController;
+import com.securingweb.vpn.config.security.jwt.JwtAuthenticationController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;

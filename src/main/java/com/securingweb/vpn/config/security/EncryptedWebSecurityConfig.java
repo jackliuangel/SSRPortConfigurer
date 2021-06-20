@@ -1,6 +1,6 @@
 package com.securingweb.vpn.config.security;
 
-import com.securingweb.vpn.config.security.JWT.JwtRequestFilter;
+import com.securingweb.vpn.config.security.jwt.JwtRequestFilter;
 import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
             .authorizeRequests()
-            .antMatchers("/").permitAll()
+            .antMatchers("/jwtLogin").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")
             .antMatchers("/V2Ray/set/**").hasAuthority("admin")

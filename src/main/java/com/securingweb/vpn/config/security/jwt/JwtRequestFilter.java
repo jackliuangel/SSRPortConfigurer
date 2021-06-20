@@ -1,4 +1,4 @@
-package com.securingweb.vpn.config.security.JWT;
+package com.securingweb.vpn.config.security.jwt;
 
 
 import com.securingweb.vpn.utility.JwtTokenUtil;

@@ -1,4 +1,4 @@
-package com.securingweb.vpn.config.security.JWT;
+package com.securingweb.vpn.config.security.jwt;
 
 
 import com.securingweb.vpn.utility.JwtTokenUtil;
@@ -49,7 +49,7 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         model.addAttribute("JWTToken", token);
-        //go to home view and then go to home.html
+        //go to home view and then go to home.html with model
         return "home";
     }
 

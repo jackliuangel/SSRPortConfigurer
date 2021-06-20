@@ -1,4 +1,4 @@
-package com.securingweb.vpn.config.security.JWT;
+package com.securingweb.vpn.config.security.jwt;
 
 import java.io.Serializable;
 

@@ -1,7 +1,5 @@
-package com.securingweb.vpn.config.security.JWT;
+package com.securingweb.vpn.config.security.jwt;
 
-
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serializable;
 
