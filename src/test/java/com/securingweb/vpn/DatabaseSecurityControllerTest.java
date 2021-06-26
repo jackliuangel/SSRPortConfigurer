@@ -18,17 +18,18 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(profiles = {"Database"})
-class SecurityControllerTest {
+class DatabaseSecurityControllerTest {
     @Value("${V2Ray.Command}")
     String command;
 
@@ -63,12 +64,11 @@ class SecurityControllerTest {
 
     @Test
     void loginWithValidUserThenAuthenticated() throws Exception {
-        SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin()
-                .user("jack")
-                .password("1234");
-
-        mockMvc.perform(login)
-               .andExpect(authenticated());
+        //TODO: should wrap them and encrypt them in JSON
+        mockMvc.perform(post("/jwtAuthenticate")
+                .param("username", "jack")
+                .param("password", "1234"))
+               .andExpect(model().attributeExists("JWTToken"));
     }
 
     @Test
@@ -80,20 +80,4 @@ class SecurityControllerTest {
         mockMvc.perform(login)
                .andExpect(unauthenticated());
     }
-//
-//    @Test
-//    void accessSecuredResourceUnauthenticatedThenRedirectsToLogin() throws Exception {
-//        mockMvc.perform(get("/hello"))
-//               .andExpect(status().is3xxRedirection())
-//               .andExpect(redirectedUrlPattern("**/login"));
-//    }
-//
-//    @Test
-//    @WithMockUser
-//    void accessSecuredResourceAuthenticatedThenOk() throws Exception {
-//        mockMvc.perform(get("/hello"))
-//               .andExpect(status().isOk());
-//    }
-//
-
 }

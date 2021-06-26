@@ -45,7 +45,7 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.csrf().disable()
-            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)  //验证请求是否正确
             .authorizeRequests()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")
@@ -54,7 +54,9 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .formLogin()
-            .defaultSuccessUrl("/home")
+//           no need this line because we let jwtAuthenticate to redirect to /home with jwt token info.
+//            If uncomment this line, we need to redirect with JWT in header, which I have not done
+//            .defaultSuccessUrl("/home")
             .failureHandler(customAuthenticationFailureHandler)
             .loginPage("/jwtLogin")
             .permitAll()
@@ -62,9 +64,6 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .logout()
             .permitAll()
         ;
-
-        //验证请求是否正确
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
