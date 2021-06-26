@@ -43,13 +43,10 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().sessionManagement()
             //不使用session
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        ;
 
         http.csrf().disable()
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
             .authorizeRequests()
-//            .antMatchers("/jwtLogin").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")
             .antMatchers("/V2Ray/set/**").hasAuthority("admin")
