@@ -11,14 +11,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 /**
  * This class implement the UserDetailsService because there are 2 db in application, which should not autoconfig
  */
-public class ApplicationJdbcUserDetailsService implements UserDetailsService {
+public class CustomizedJdbcUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserProfileRepository userProfileRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        UserProfile userProfile = userProfileRepository.findByName(name);// name is used as repository ID
+        UserProfile userProfile = userProfileRepository.findByName(name);
 
         return User
                 .withUsername(userProfile.getName())

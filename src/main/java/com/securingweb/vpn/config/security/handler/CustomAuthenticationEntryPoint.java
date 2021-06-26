@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         HashMap<String, String> map = new HashMap<>(2);
         map.put("uri", request.getRequestURI());
-        map.put("msg", "access resource authentication failed: "+ authException.getMessage());
+        map.put("msg", "Customized: access resource authentication failed: "+ authException.getMessage());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

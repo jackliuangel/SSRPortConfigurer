@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
 >
 <head>
-    <title>VPN port configurer with Spring Security </title>
+    <title>VPN port configurer with Spring Security</title>
 </head>
 <body>
-<h1>Sign in and save JSessionID</h1>
+<h1>Sign in and save JSessionID, No Database</h1>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
@@ -15,7 +15,7 @@
 <form method="post" th:action="@{/login}">
     <div><label> User Name : <input name="username" type="text"/> </label></div>
     <div><label> Password: <input name="password" type="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
+    <div><input type="submit" value="Sign In with JSession"/></div>
 </form>
 </body>
 </html>

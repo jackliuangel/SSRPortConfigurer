@@ -29,7 +29,8 @@ In local, run with idea and with postgreSQL (in docker)docker.
 
 In prod, run by command
 
-`java -jar *.jar`
+`java -jar *.jar  -Dspring.profiles.active=Database`
+`java -jar *.jar  -Dspring.profiles.active=NoDB`
 
 
 #test and use

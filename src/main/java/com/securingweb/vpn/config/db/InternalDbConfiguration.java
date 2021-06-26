@@ -23,6 +23,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Profile("Database")
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -49,10 +50,10 @@ public class InternalDbConfiguration {
         Map<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         LocalContainerEntityManagerFactoryBean emfb = builder.dataSource(dataSource)
-                .packages("com.securingweb.vpn.domain.internal")
-                .properties(properties)
-                .persistenceUnit("dbInternal")
-                .build();
+                                                             .packages("com.securingweb.vpn.domain.internal")
+                                                             .properties(properties)
+                                                             .persistenceUnit("dbInternal")
+                                                             .build();
 
         emfb.getJpaPropertyMap().put(AvailableSettings.BEAN_CONTAINER, new SpringBeanContainer(beanFactory));
         return emfb;

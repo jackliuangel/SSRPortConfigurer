@@ -4,6 +4,7 @@ package com.securingweb.vpn.config.security.jwt;
 import com.securingweb.vpn.utility.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,8 +22,11 @@ import java.io.IOException;
 /**
  * 过滤器 用于 Spring Boot Security
  * OncePerRequestFilter 一次请求只通过一次filter，而不需要重复执行
+ * 适用场景， 当每一次收到http请求后，都要检查这个请求里的JWT： 解密这个JWT，看看这个username是否存在于DB。 注意这里没有检查密码
+ * 所以这个token如果泄漏了，即使当这个user已经logout，依然可以模拟这个user在操作
  */
-@Component
+@Profile("Database")
+@Component("jwtRequestFilter")
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -74,5 +78,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
-
 }

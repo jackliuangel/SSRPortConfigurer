@@ -1,11 +1,13 @@
 package com.securingweb.vpn.config.security;
 
-import com.securingweb.vpn.config.security.jwt.JwtRequestFilter;
 import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
+import com.securingweb.vpn.config.security.jwt.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,14 +21,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Profile("Database")
 @Configuration
 @EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Autowired
+    @Qualifier("jwtRequestFilter")
     private JwtRequestFilter jwtRequestFilter;
 
     @Override
@@ -41,9 +46,10 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
 
         http.csrf().disable()
+            .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
 //                .addFilterAt(authenticationWebFilter, AUTHENTICATION)
             .authorizeRequests()
-            .antMatchers("/jwtLogin").permitAll()
+//            .antMatchers("/jwtLogin").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")
             .antMatchers("/V2Ray/set/**").hasAuthority("admin")
@@ -51,9 +57,8 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .formLogin()
+            .defaultSuccessUrl("/home")
             .failureHandler(customAuthenticationFailureHandler)
-//FIXME: if want to use jsessionid to manage the login status , uncomment it
-//            .loginPage("/login")
             .loginPage("/jwtLogin")
             .permitAll()
             .and()
@@ -65,16 +70,14 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-
     /**
-     * for returning jwt user
+     * for returning jwt with user info, such name, but no password
      */
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        return new ApplicationJdbcUserDetailsService();
+        return new CustomizedJdbcUserDetailsService();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authProvider() {
@@ -99,6 +102,4 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
-
 }

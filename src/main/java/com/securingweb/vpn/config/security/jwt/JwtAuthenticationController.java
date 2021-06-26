@@ -4,6 +4,7 @@ package com.securingweb.vpn.config.security.jwt;
 import com.securingweb.vpn.utility.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 用于验证 jwt 返回客户端 jwt（json web token）
  */
+@Profile("Database")
 @Controller
 @Description("it returns model-view instead of pure JSON. ")
 public class JwtAuthenticationController {
@@ -36,11 +38,9 @@ public class JwtAuthenticationController {
      * 获取 客户端来的 username password 使用秘钥加密成 json web token
      */
     @RequestMapping(value = "/jwtAuthenticate", method = RequestMethod.POST)
-//    public String createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
     public String createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password, Model model) throws Exception {
 
-//        JwtRequest authenticationRequest = new JwtRequest(username, password);
-
+        //invokes loadUserDetails and PasswordEncoder to check the username and password
         authenticate(username, password);
 
         final UserDetails userDetails = userDetailsService

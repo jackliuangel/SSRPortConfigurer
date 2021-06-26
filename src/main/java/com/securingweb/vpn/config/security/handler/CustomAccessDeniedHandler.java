@@ -21,7 +21,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         HashMap<String, String> map = new HashMap<>(2);
         map.put("uri", request.getRequestURI());
-        map.put("msg", "authorization failed: "+ accessDeniedException);
+        map.put("msg", "Customized: authorization failed: "+ accessDeniedException);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

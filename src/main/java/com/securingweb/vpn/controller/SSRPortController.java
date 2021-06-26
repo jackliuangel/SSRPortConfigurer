@@ -33,7 +33,7 @@ public class SSRPortController {
 
 
     @GetMapping("/")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+//    @ResponseStatus(HttpStatus.ACCEPTED)
     public Integer getSSRPort() throws Exception {
         log.info("SSR getSSRPort");
         return ssrPortService.readPort();

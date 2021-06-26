@@ -7,7 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Slf4j
 public class FuncationalTests {
 
-
     @Test
     public void testTry() {
         try {
@@ -20,14 +19,9 @@ public class FuncationalTests {
         }
     }
 
-
     @Test
-    public void testEncoder() {
+    void testEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         System.out.println(bCryptPasswordEncoder.encode("1234"));
-
-
     }
-
-
 }
