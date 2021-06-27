@@ -1,6 +1,7 @@
 package com.securingweb.vpn.controller;
 
 
+import com.securingweb.vpn.controller.resolver.UserInfo;
 import com.securingweb.vpn.service.SSRPortService;
 import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +32,10 @@ public class SSRPortController {
         return SSRRestartCommand + "\n\n" + result;
     }
 
-
     @GetMapping("/")
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Integer getSSRPort() throws Exception {
-        log.info("SSR getSSRPort");
+    public Integer getSSRPort(UserInfo currentUserInfo) throws Exception {
+        log.info("SSR getSSRPort invoked by {}", currentUserInfo);
         return ssrPortService.readPort();
-
     }
 
 }

@@ -1,29 +1,27 @@
 package com.securingweb.vpn.config;
 
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationFailureHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.securingweb.vpn.controller.resolver.UserInfoResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
-import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import javax.servlet.ServletContext;
+import java.util.List;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/home").setViewName("home");
+        //whitelist from access security
+        registry.addViewController("/index").setViewName("index");
         //the follow 2 line must be added because html pages needs a controller to dispatch
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/jwtLogin").setViewName("jwtLogin");
+        //home is the 1st page after successfully login
+        registry.addViewController("/home").setViewName("home");
     }
 
     //for both cases of  with or without db, this controller will handle the authentication exceptions
@@ -32,4 +30,14 @@ public class MvcConfig implements WebMvcConfigurer {
         return new CustomAuthenticationFailureHandler();
     }
 
+    @Bean
+    UserInfoResolver userInfoResolver() {
+        return new UserInfoResolver();
+    }
+
+    @Override
+    public void addArgumentResolvers(
+            List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(userInfoResolver());
+    }
 }

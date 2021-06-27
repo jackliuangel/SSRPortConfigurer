@@ -23,6 +23,13 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @EnableWebSecurity
 public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * No need to save @Authentication in SecurityContext because it is done by Spring Security
+     * refer to
+     * @SecurityContextPersistenceFilter
+     */
+
+
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -36,6 +43,7 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/index").permitAll()
                 .antMatchers("/SSR/set/**").hasAuthority("admin")
                 .antMatchers("/V2Ray/set/**").hasAuthority("admin")
                 .antMatchers("/actuator/**").hasAuthority("viewer")

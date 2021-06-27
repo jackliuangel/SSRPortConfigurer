@@ -26,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //TODO: add a white list filter
+
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
@@ -47,6 +49,7 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)  //验证请求是否正确
             .authorizeRequests()
+            .antMatchers("/index").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")
             .antMatchers("/V2Ray/set/**").hasAuthority("admin")
