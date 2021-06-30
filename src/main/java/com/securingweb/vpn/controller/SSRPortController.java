@@ -7,8 +7,11 @@ import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/SSR")
@@ -22,6 +25,7 @@ public class SSRPortController {
     @Value("${SSR.Command}")
     String SSRRestartCommand;
 
+    @CachePut("ssr")
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateSSRPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
@@ -32,6 +36,7 @@ public class SSRPortController {
         return SSRRestartCommand + "\n\n" + result;
     }
 
+    @Cacheable("ssr")
     @GetMapping("/")
     public Integer getSSRPort(UserInfo currentUserInfo) throws Exception {
         log.info("SSR getSSRPort invoked by {}", currentUserInfo);

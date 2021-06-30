@@ -26,8 +26,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //TODO: add a white list filter
-
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;

@@ -7,6 +7,8 @@ import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ public class V2RayPortController {
     @Value("${V2Ray.Command}")
     String V2RayRestartCommand;
 
-
+    @CachePut("v2Ray")
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
     public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber) throws Exception {
@@ -32,7 +34,7 @@ public class V2RayPortController {
         return V2RayRestartCommand + "\n\n" + result;
     }
 
-
+    @Cacheable("v2Ray")
     @GetMapping("/")
     public Integer getV2RayPort(UserInfo currentUserInfo) throws Exception {
         log.info("V2Ray getSSRPort invoked by {}", currentUserInfo);
