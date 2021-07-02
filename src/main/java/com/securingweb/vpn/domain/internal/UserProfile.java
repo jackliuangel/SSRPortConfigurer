@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
 
-@Profile("Database")
+@Profile({"Database", "OAuth2Github"})
 @Entity
 @Data
 @AllArgsConstructor

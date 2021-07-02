@@ -17,9 +17,11 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         //whitelist from access security
         registry.addViewController("/index").setViewName("index");
-        //the follow 2 line must be added because html pages needs a controller to dispatch
+        //the follow 3 line must be added because html pages needs a controller to dispatch
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/jwtLogin").setViewName("jwtLogin");
+        registry.addViewController("/oauth_login").setViewName("oauth_login");
+        registry.addViewController("/loginSuccess").setViewName("loginSuccess");
         //home is the 1st page after successfully login
         registry.addViewController("/home").setViewName("home");
     }
