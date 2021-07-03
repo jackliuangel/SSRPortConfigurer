@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles(profiles = {"Database"})
+@ActiveProfiles(profiles = {"JWT"})
 class DatabaseSecurityControllerTest {
     @Value("${V2Ray.Command}")
     String command;

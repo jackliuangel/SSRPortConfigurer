@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Profile({"Database", "OAuth2Github"})
+@Profile({"JWT", "OAuth2Github"})
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(

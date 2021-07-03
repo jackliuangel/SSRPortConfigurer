@@ -21,9 +21,8 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/jwtLogin").setViewName("jwtLogin");
         registry.addViewController("/oauth_login").setViewName("oauth_login");
+        //loginSuccess is the 1st page after successfully login
         registry.addViewController("/loginSuccess").setViewName("loginSuccess");
-        //home is the 1st page after successfully login
-        registry.addViewController("/home").setViewName("home");
     }
 
     //for both cases of  with or without db, this controller will handle the authentication exceptions

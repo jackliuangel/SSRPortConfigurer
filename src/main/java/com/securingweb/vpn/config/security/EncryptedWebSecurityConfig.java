@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Profile("Database")
+@Profile("JWT")
 @Configuration
 @EnableWebSecurity
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {

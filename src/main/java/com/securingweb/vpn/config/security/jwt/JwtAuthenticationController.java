@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 用于验证 jwt 返回客户端 jwt（json web token）
  */
-@Profile("Database")
+@Profile("JWT")
 @Controller
 @Description("it returns model-view instead of pure JSON. ")
 public class JwtAuthenticationController {
@@ -48,15 +48,15 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        model.addAttribute("JWTToken", "Bearer "+ token); //easy to copy paste in Postman
-        //go to home view and then go to home.html with model
+        model.addAttribute("name", "Bearer "+ token); //easy to copy paste in Postman
+        //go to home view and then go to loginSuccess.html with model
         /**
          * 这种跳转没有经过DispatchServlet
          * 所以不需要security check filter
          * @jwtRequestFilter
          * 如果在defaultSuccessUrl跳转， 需要在header上加上JWT才能通过需要security check filter
          */
-        return "home";
+        return "loginSuccess";
     }
 
     /**

@@ -1,8 +1,8 @@
 package com.securingweb.vpn.config.security;
 
+import com.securingweb.vpn.config.security.oauth2.CustomizedInMemoryOAuth2AuthorizedClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:application-OAuth2Github.properties")
 @Configuration
 @EnableWebSecurity
-public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter implements EnvironmentAware {
+public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //bean life cycle issue to need to set env by EnvironmentAware
 
     private static List<String> clients = Arrays.asList("github");
@@ -74,8 +74,11 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter implem
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/oauth_login")
-            .permitAll()
+            .antMatchers("/index").permitAll()
+            .antMatchers("/oauth_login").permitAll()
+            .antMatchers("/SSR/set/**").hasAuthority("admin")
+            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
+            .antMatchers("/actuator/**").hasAuthority("viewer")
             .anyRequest()
             .authenticated()
             .and()
@@ -106,38 +109,5 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter implem
 
         return new InMemoryClientRegistrationRepository(registrations);
     }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.env = environment;
-    }
-
-//
-//    @Bean
-//    @Override
-//    public UserDetailsService userDetailsService() {
-//        UserDetails Jack =
-//                User
-//                        .withUsername("jack")
-//                        .password(passwordEncoder().encode("603"))
-//                        .authorities("admin")
-//                        .build();
-//
-//        UserDetails Jason =
-//                User
-//                        .withUsername("jason")
-//                        .password(passwordEncoder().encode("603"))
-//                        .authorities("admin")
-//                        .build();
-//
-//        UserDetails Angel =
-//                User
-//                        .withUsername("angel")
-//                        .password(passwordEncoder().encode("603"))
-//                        .authorities("viewer")
-//                        .build();
-//
-//        return new InMemoryUserDetailsManager(Jack, Jason, Angel);
-//    }
 
 }

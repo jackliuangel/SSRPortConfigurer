@@ -1,4 +1,4 @@
-package com.securingweb.vpn.config.security;
+package com.securingweb.vpn.config.security.oauth2;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,7 @@ public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OA
     private final Map<String, OAuth2AuthorizedClient> authorizedClients = new ConcurrentHashMap<>();
     private final ClientRegistrationRepository clientRegistrationRepository;
 
-     CustomizedInMemoryOAuth2AuthorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
+     public CustomizedInMemoryOAuth2AuthorizedClientService(ClientRegistrationRepository clientRegistrationRepository) {
         Assert.notNull(clientRegistrationRepository, "clientRegistrationRepository cannot be null");
         this.clientRegistrationRepository = clientRegistrationRepository;
     }
@@ -45,6 +45,7 @@ public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OA
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(principal, "principal cannot be null");
         log.info("map this name to UserDetailService principal name and save : {} {}", authorizedClient.getClientRegistration(), principal.getName());
+        log.info("filter out the user which has passed oauth2 authorization but NOT in our DB");
         this.authorizedClients.put(this.getIdentifier(
                 authorizedClient.getClientRegistration(), principal.getName()), authorizedClient);
     }

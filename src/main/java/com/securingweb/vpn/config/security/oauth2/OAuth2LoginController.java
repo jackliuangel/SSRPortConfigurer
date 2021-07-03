@@ -1,7 +1,7 @@
 package com.securingweb.vpn.config.security.oauth2;
 
-import com.securingweb.vpn.config.security.CustomizedInMemoryOAuth2AuthorizedClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,13 +17,13 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+@Profile("OAuth2Github")
 @Controller
 public class OAuth2LoginController {
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
 
     @GetMapping("/loginSuccess")
-
     public String getLoginInfo(Model model, OAuth2AuthenticationToken authentication) {
         OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(authentication.getAuthorizedClientRegistrationId(), authentication.getName());
 

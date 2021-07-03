@@ -18,7 +18,7 @@ import java.util.function.Function;
 /**
  * jwt 库
  */
-@Profile("Database")
+@Profile("JWT")
 @Component
 public class JwtTokenUtil implements Serializable {
 

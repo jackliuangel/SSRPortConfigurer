@@ -50,7 +50,7 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/loginSuccess")
                 .failureHandler(customAuthenticationFailureHandler)
                 .loginPage("/login")
                 .permitAll()

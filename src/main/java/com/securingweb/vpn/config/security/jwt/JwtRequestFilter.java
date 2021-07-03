@@ -25,7 +25,7 @@ import java.io.IOException;
  * 适用场景， 当每一次收到http请求后，都要检查这个请求里的JWT： 解密这个JWT，看看这个username是否存在于DB。 注意这里没有检查密码
  * 所以这个token如果泄漏了，即使当这个user已经logout，依然可以模拟这个user在操作
  */
-@Profile("Database")
+@Profile("JWT")
 @Component("jwtRequestFilter")
 public class JwtRequestFilter extends OncePerRequestFilter {
 

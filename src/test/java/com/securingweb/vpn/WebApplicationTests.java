@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * similar to the one that would be started in a production environment.
  */
 @SpringBootTest
-@ActiveProfiles(profiles = {"Database"})
+@ActiveProfiles(profiles = {"JWT"})
 class WebApplicationTests {
 
     @Autowired
