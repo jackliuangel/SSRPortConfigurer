@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +21,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * refer to https://www.baeldung.com/spring-security-5-oauth2-login
+ */
+
 @Profile("OAuth2Github")
 @PropertySource("classpath:application-OAuth2Github.properties")
 @Configuration
@@ -30,22 +33,69 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //bean life cycle issue to need to set env by EnvironmentAware
 
     private static List<String> clients = Arrays.asList("github");
+
     private static String CLIENT_PROPERTY_KEY
             = "spring.security.oauth2.client.registration.";
+
+    private String[] staticResources = {
+            "/images/**",
+    };
     /**
      * No need to save @Authentication in SecurityContext because it is done by Spring Security
      * refer to
      *
-     * @SecurityContextPersistenceFilter
+     * @class SecurityContextPersistenceFilter
      */
-
 
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
 
-    @Autowired
-    private Environment env;
+    private ClientRegistration getRegistration(String client) {
+        String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
+        return CommonOAuth2Provider.GITHUB.getBuilder(client)
+                                          .clientId(clientId).clientSecret(clientSecret).build();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers(staticResources).permitAll()
+            .antMatchers("/index").permitAll()
+            .antMatchers("/oauth2_login").permitAll()
+            .antMatchers("/SSR/set/**").hasAuthority("admin")
+            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
+            .antMatchers("/actuator/**").hasAuthority("viewer")
+            .anyRequest()
+            .authenticated()
+            .and()
+            .oauth2Login()
+            .clientRegistrationRepository(clientRegistrationRepository())
+            .authorizedClientService(authorizedClientService())
+            .loginPage("/oauth2_login")
+            .defaultSuccessUrl("/loginSuccess")
+            .failureHandler(customAuthenticationFailureHandler);
+    }
+
+    @Bean
+    public OAuth2AuthorizedClientService authorizedClientService() {
+        return new CustomizedInMemoryOAuth2AuthorizedClientService(
+                clientRegistrationRepository());
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        List<ClientRegistration> registrations = clients.stream()
+                                                        .map(c -> getRegistration(c))
+                                                        .filter(registration -> registration != null)
+                                                        .collect(Collectors.toList());
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
+
+    //
+//    @Autowired
+//    private Environment env;
 
     //    private ClientRegistration getRegistration(String client) {
 //        String clientId = env.getProperty(
@@ -64,50 +114,5 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        }
 //        return null;
 //    }
-    private ClientRegistration getRegistration(String client) {
-        String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
-        return CommonOAuth2Provider.GITHUB.getBuilder(client)
-                                          .clientId(clientId).clientSecret(clientSecret).build();
-    }
-
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .antMatchers("/index").permitAll()
-            .antMatchers("/oauth_login").permitAll()
-            .antMatchers("/SSR/set/**").hasAuthority("admin")
-            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
-            .antMatchers("/actuator/**").hasAuthority("viewer")
-            .anyRequest()
-            .authenticated()
-            .and()
-            .oauth2Login()
-            .clientRegistrationRepository(clientRegistrationRepository())
-            .authorizedClientService(authorizedClientService())
-            .loginPage("/oauth_login")
-            .defaultSuccessUrl("/loginSuccess")
-            .failureHandler(customAuthenticationFailureHandler);
-    }
-
-
-    @Bean
-    public OAuth2AuthorizedClientService authorizedClientService() {
-
-        return new CustomizedInMemoryOAuth2AuthorizedClientService(
-                clientRegistrationRepository());
-    }
-
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-
-
-        List<ClientRegistration> registrations = clients.stream()
-                                                        .map(c -> getRegistration(c))
-                                                        .filter(registration -> registration != null)
-                                                        .collect(Collectors.toList());
-
-        return new InMemoryClientRegistrationRepository(registrations);
-    }
 
 }

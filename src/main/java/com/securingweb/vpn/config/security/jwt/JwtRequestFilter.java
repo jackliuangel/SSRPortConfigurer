@@ -76,17 +76,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                 /**
                  * 从JWT中翻译出user的信息，并作为
-                 * @Authentication usernamePasswordAuthenticationToken
+                 * @class Authentication usernamePasswordAuthenticationToken
                  * set到SecurityContext
                  * 在
-                 * @UserInfoResolver
+                 * @class UserInfoResolver
                  * 可以取出， getAuthentication
                  */
 
                 /**
                  * No need to save @Authentication in SecurityContext because it is done by Spring Security
                  * refer to
-                 * @SecurityContextPersistenceFilter
+                 * @class SecurityContextPersistenceFilter
                  */
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

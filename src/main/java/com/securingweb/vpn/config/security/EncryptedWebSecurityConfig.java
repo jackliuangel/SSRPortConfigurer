@@ -29,7 +29,9 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
-
+    String[] staticResources = {
+            "/images/**",
+    };
     @Autowired
     @Qualifier("jwtRequestFilter")
     private JwtRequestFilter jwtRequestFilter;
@@ -47,6 +49,7 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)  //验证请求是否正确
             .authorizeRequests()
+            .antMatchers(staticResources).permitAll()
             .antMatchers("/index").permitAll()
             .antMatchers("/jwtAuthenticate").permitAll()
             .antMatchers("/SSR/set/**").hasAuthority("admin")

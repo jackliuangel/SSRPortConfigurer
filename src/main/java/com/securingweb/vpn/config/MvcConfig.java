@@ -20,7 +20,7 @@ public class MvcConfig implements WebMvcConfigurer {
         //the follow 3 line must be added because html pages needs a controller to dispatch
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/jwtLogin").setViewName("jwtLogin");
-        registry.addViewController("/oauth_login").setViewName("oauth_login");
+        registry.addViewController("/oauth2_login").setViewName("oauth2_login");
         //loginSuccess is the 1st page after successfully login
         registry.addViewController("/loginSuccess").setViewName("loginSuccess");
     }

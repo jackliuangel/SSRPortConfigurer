@@ -40,8 +40,9 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
 
         log.debug("principle = " + principal);
 
-        if (principal instanceof UsernamePasswordAuthenticationToken) { // jsessionid and jwt both uses UsernamePasswordAuthenticationToken
-
+        if (principal instanceof UsernamePasswordAuthenticationToken) {
+            // jsessionid and jwt both uses UsernamePasswordAuthenticationToken
+//TODO: need to check oauth2
             UsernamePasswordAuthenticationToken upat = (UsernamePasswordAuthenticationToken) principal;
 
             return UserInfo.builder()

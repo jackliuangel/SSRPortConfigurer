@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Profile("NoDB")
 @Controller
-public class JessionLoginController {
+public class JSessionLoginController {
 
     @GetMapping("/loginSuccess")
     public String getLoginInfo(Model model, UsernamePasswordAuthenticationToken authentication) {
-
         model.addAttribute("name", authentication.getName());
-
         return "loginSuccess";
     }
 }

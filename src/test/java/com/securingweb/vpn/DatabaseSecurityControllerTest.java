@@ -68,7 +68,7 @@ class DatabaseSecurityControllerTest {
         mockMvc.perform(post("/jwtAuthenticate")
                 .param("username", "jack")
                 .param("password", "1234"))
-               .andExpect(model().attributeExists("JWTToken"));
+               .andExpect(model().attributeExists("name"));
     }
 
     @Test

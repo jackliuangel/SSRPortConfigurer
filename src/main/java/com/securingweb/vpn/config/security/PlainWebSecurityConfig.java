@@ -26,13 +26,23 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * No need to save @Authentication in SecurityContext because it is done by Spring Security
      * refer to
-     * @SecurityContextPersistenceFilter
+     * @class SecurityContextPersistenceFilter
      */
 
+
+    /**
+     * for static image resource accessing, refer to
+     *
+     * @link https://stackoverflow.com/questions/44455900/spring-security-login-page-images
+     */
 
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    private String[] staticResources = {
+            "/images/**",
+    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -43,6 +53,7 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(staticResources).permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/SSR/set/**").hasAuthority("admin")
                 .antMatchers("/V2Ray/set/**").hasAuthority("admin")
@@ -87,7 +98,8 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * https://mkyong.com/spring-boot/spring-security-there-is-no-passwordencoder-mapped-for-the-id-null/
+     * @link https://mkyong.com/spring-boot/spring-security-there-is-no-passwordencoder-mapped-for-the-id-null/
+     * <p>
      * Prior to Spring Security 5.0 the default PasswordEncoder was NoOpPasswordEncoder which required plain text passwords.
      * In Spring Security 5, the default is DelegatingPasswordEncoder, which required Password Storage Format.
      * So this bean is needed.

@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * some change from
- * @InMemoryOAuth2AuthorizedClientService
+ * extends from
+ * @class InMemoryOAuth2AuthorizedClientService
  */
 @Slf4j
 public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
@@ -35,7 +35,7 @@ public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OA
             return null;
         }
 
-        log.info("map this name to UserDetailService princial name: {}", principalName);
+        log.info("map this name to UserDetailService principal name: {}", principalName);
 
         return (T) this.authorizedClients.get(this.getIdentifier(registration, principalName));
     }
@@ -45,7 +45,7 @@ public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OA
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(principal, "principal cannot be null");
         log.info("map this name to UserDetailService principal name and save : {} {}", authorizedClient.getClientRegistration(), principal.getName());
-        log.info("filter out the user which has passed oauth2 authorization but NOT in our DB");
+        log.info("TODO: filter out the user which has passed oauth2 authorization but NOT in our DB");
         this.authorizedClients.put(this.getIdentifier(
                 authorizedClient.getClientRegistration(), principal.getName()), authorizedClient);
     }

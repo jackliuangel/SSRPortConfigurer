@@ -9,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
- * This class implement the UserDetailsService because there are 2 db in application, which should not autoconfig
+ * This class implement the UserDetailsService
+ * because there are 2 db in application, which should not autoconfig
  */
 public class CustomizedJdbcUserDetailsService implements UserDetailsService {
 
