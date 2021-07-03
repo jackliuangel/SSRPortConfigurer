@@ -36,10 +36,6 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static String CLIENT_PROPERTY_KEY
             = "spring.security.oauth2.client.registration.";
-
-    private String[] staticResources = {
-            "/images/**",
-    };
     /**
      * No need to save @Authentication in SecurityContext because it is done by Spring Security
      * refer to
@@ -50,6 +46,9 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
+    private String[] staticResources = {
+            "/images/**",
+    };
 
     private ClientRegistration getRegistration(String client) {
         String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
@@ -74,7 +73,11 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizedClientService(authorizedClientService())
             .loginPage("/oauth2_login")
             .defaultSuccessUrl("/loginSuccess")
-            .failureHandler(customAuthenticationFailureHandler);
+            .failureHandler(customAuthenticationFailureHandler)
+            .and()
+            .logout()
+            .permitAll();
+
     }
 
     @Bean

@@ -9,7 +9,9 @@
 </head>
 <body>
 <h1>Sign in and save JWT response, with Database</h1>
-
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
 <form method="post" th:action="@{/jwtAuthenticate}">
     <div><label> User Name : <input name="username" type="text"/> </label></div>
     <div><label> Password: <input name="password" type="password"/> </label></div>
