@@ -23,8 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles(profiles = {"NoDB"})
-class NoDBSecurityControllerTest {
+@ActiveProfiles(profiles = {"JSession"})
+class JSessionSecurityControllerTest {
     @Value("${V2Ray.Command}")
     String command;
 

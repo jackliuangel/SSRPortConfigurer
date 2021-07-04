@@ -1,5 +1,6 @@
 package com.securingweb.vpn.config.security;
 
+import com.securingweb.vpn.config.security.oauth2.CustomOAuth2AuthClientFilter;
 import com.securingweb.vpn.config.security.oauth2.CustomizedInMemoryOAuth2AuthorizedClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,10 +12,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import java.util.Arrays;
@@ -33,9 +36,11 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //bean life cycle issue to need to set env by EnvironmentAware
 
     private static List<String> clients = Arrays.asList("github");
-
     private static String CLIENT_PROPERTY_KEY
             = "spring.security.oauth2.client.registration.";
+    @Autowired
+    @Qualifier("customAuthenticationFailureHandler")
+    AuthenticationFailureHandler customAuthenticationFailureHandler;
     /**
      * No need to save @Authentication in SecurityContext because it is done by Spring Security
      * refer to
@@ -44,11 +49,23 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
 
     @Autowired
-    @Qualifier("customAuthenticationFailureHandler")
-    AuthenticationFailureHandler customAuthenticationFailureHandler;
+    @Qualifier("CustomOAuth2AuthClientFilter")
+    private CustomOAuth2AuthClientFilter customOAuth2AuthClientFilter;
     private String[] staticResources = {
             "/images/**",
     };
+
+    /**
+     * it is used by
+     *
+     * @return
+     * @Class CustomOauth2AuthClientFilter
+     */
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new CustomizedJdbcUserDetailsService();
+    }
 
     private ClientRegistration getRegistration(String client) {
         String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
@@ -62,22 +79,28 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(staticResources).permitAll()
             .antMatchers("/index").permitAll()
             .antMatchers("/oauth2_login").permitAll()
-            .antMatchers("/SSR/set/**").hasAuthority("admin")
-            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
-            .antMatchers("/actuator/**").hasAuthority("viewer")
+            /**
+             * the authorization is managed by the controller because the permission is NOT injected in
+             * @Class OAuth2AuthenticationToken
+             */
+//            .antMatchers("/SSR/set/**").hasAuthority("admin")
+//            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
+//            .antMatchers("/actuator/**").hasAuthority("viewer")
             .anyRequest()
             .authenticated()
             .and()
+            .addFilterAfter(customOAuth2AuthClientFilter, OAuth2LoginAuthenticationFilter.class)
             .oauth2Login()
+//TODO: should add authorities from UserDetailService to OAuth2AccessToken respose?
             .clientRegistrationRepository(clientRegistrationRepository())
             .authorizedClientService(authorizedClientService())
+
             .loginPage("/oauth2_login")
             .defaultSuccessUrl("/loginSuccess")
             .failureHandler(customAuthenticationFailureHandler)
             .and()
-            .logout()
+            .logout()//will redirect to /loginPage with param
             .permitAll();
-
     }
 
     @Bean
@@ -96,7 +119,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new InMemoryClientRegistrationRepository(registrations);
     }
 
-    //
+
 //    @Autowired
 //    private Environment env;
 

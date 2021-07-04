@@ -31,4 +31,8 @@ public class UserProfile {
 //    @Type(type = "pg-uuid")
     private Long uuid;
 
+    String clientId;
+
+    String oAuth2userName;
+
 }

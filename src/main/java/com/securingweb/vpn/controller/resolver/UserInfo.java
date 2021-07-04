@@ -12,4 +12,8 @@ public class UserInfo {
     String authority;
 
     String uuid;
+
+    String clientId;
+
+    String oAuth2userName;
 }

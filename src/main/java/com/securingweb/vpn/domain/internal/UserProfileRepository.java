@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
     UserProfile findByName(String userName);
+    UserProfile findByOAuth2userName(String oauth2userName);
 }

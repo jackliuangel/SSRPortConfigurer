@@ -30,7 +30,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserDetailsService jwtUserDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -61,7 +61,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // 验证
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             // JWT 验证通过 使用Spring Security 管理
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {//only check the jwt user name is existing in DB

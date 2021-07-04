@@ -62,10 +62,10 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            If uncomment this line, we need to redirect with JWT in header, which I have not done
 //            .defaultSuccessUrl("/home")
             .failureHandler(customAuthenticationFailureHandler)
-            .loginPage("/jwtLogin")
+            .loginPage("/jwt_login")
             .permitAll()
             .and()
-            .logout()
+            .logout()//will redirect to /loginPage with param
             .permitAll()
         ;
     }

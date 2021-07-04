@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
-@Profile("NoDB")
+@Profile("JSession")
 @Configuration
 @EnableWebSecurity
 public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -63,10 +63,10 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .defaultSuccessUrl("/loginSuccess")
                 .failureHandler(customAuthenticationFailureHandler)
-                .loginPage("/login")
+                .loginPage("/jsession_login")
                 .permitAll()
                 .and()
-                .logout()
+                .logout()//will redirect to /loginPage with param
                 .permitAll();
     }
 
