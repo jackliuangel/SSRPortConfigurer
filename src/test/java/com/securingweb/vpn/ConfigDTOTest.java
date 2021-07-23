@@ -37,4 +37,22 @@ public class ConfigDTOTest {
         assertThat(config).isNotNull()
                           .hasFieldOrPropertyWithValue("server_port", 1234);
     }
+
+    @Test
+    void testTestJsonDTO() throws Exception {
+
+        Resource classPathResource = new ClassPathResource("TestJsonDTO.json");
+        ObjectMapper mapper = new ObjectMapper();
+        TestJsonDTO config = mapper.readValue(classPathResource.getFile(), TestJsonDTO.class);
+        assertThat(config).isNotNull()
+                          .hasFieldOrPropertyWithValue("isGraduated", true);
+
+
+        TestJsonDTO testJsonDTO = new TestJsonDTO(true);
+        String json = mapper.writeValueAsString(testJsonDTO);
+        assertThat(json).isNotBlank();
+
+    }
+
+
 }

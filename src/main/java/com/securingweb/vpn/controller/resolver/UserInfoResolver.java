@@ -63,15 +63,11 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
 
             String name = (String) oAuth2AuthenticationToken.getPrincipal().getAttributes().get("login");
 
-            String userName = "";
-            if (userProfileRepository != null) {
-                UserProfile userProfile = userProfileRepository.findByOAuth2userName(oAuth2AuthenticationToken.getName());
-                userName = userProfile.getName();
-            }
+            UserProfile userProfile = userProfileRepository.findByOAuth2userName(oAuth2AuthenticationToken.getName());
 
             return UserInfo.builder()
-                           .name(name + " as " + userName)
-//                           .authority(userProfile.getAuthority()) //TODO: checkpoint(), fill with scope
+                           .name(name + " as " + userProfile.getName())
+                           .authority(oAuth2AuthenticationToken.getPrincipal().getAttributes().get("type").toString())
                            .build();
         }
         return userInfo;

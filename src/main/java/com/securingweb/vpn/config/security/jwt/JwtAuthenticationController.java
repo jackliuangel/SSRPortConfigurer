@@ -9,7 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,26 +31,18 @@ public class JwtAuthenticationController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
     /**
      * 获取 客户端来的 username password 使用秘钥加密成 json web token
      */
     @RequestMapping(value = "/jwtAuthenticate", method = RequestMethod.POST)
     public String createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password, Model model) throws Exception {
 
-        //TODO: need to reduce invoke times, otherwise there are 2 entry in DB
-
         //invokes loadUserDetails and PasswordEncoder to check the username and password
-        authenticate(username, password);
+        Authentication authentication = authenticate(username, password);
 
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(username);
+        final String token = jwtTokenUtil.generateToken(authentication.getName());
 
-        final String token = jwtTokenUtil.generateToken(userDetails);
-
-        model.addAttribute("name", "Bearer "+ token); //easy to copy paste in Postman
+        model.addAttribute("name", "Bearer " + token); //easy to copy paste in Postman
         //go to home view and then go to loginSuccess.html with model
         /**
          * 这种跳转没有经过DispatchServlet
@@ -64,9 +56,9 @@ public class JwtAuthenticationController {
     /**
      * 获取 客户端来的 username password 使用秘钥加密成 json web token
      */
-    private void authenticate(String username, String password) throws Exception {
+    private Authentication authenticate(String username, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {

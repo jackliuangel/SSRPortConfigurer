@@ -6,8 +6,8 @@ import com.securingweb.vpn.domain.internal.UserProfileRepository;
 import com.securingweb.vpn.exception.UserLoginException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -31,15 +31,19 @@ public class CustomOAuth2AuthClientFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
-        Authentication currentAuthentication = SecurityContextHolder.getContext().getAuthentication();
+        OAuth2AuthenticationToken currentAuthentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
-        if (currentAuthentication == null) {
+        if (currentAuthentication == null) { //not initialized
             chain.doFilter(request, response);
             return;
         }
 
         UserProfile userProfile = userProfileRepository.findByOAuth2userName(currentAuthentication.getName());
         if (userProfile != null) {
+
+            if (!currentAuthentication.getPrincipal().getAttributes().get("id").toString().equals(userProfile.getOAuth2userName())) {
+                throw new UserLoginException("userProfile oauth id not matching with Github oauth id");
+            }
             chain.doFilter(request, response);
         } else {
             throw new UserLoginException("username does not exist in user profile repository");

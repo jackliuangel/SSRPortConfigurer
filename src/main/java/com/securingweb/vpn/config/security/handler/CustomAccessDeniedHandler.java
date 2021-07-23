@@ -1,5 +1,9 @@
 package com.securingweb.vpn.config.security.handler;
 
+import com.securingweb.vpn.audit.UserAuditAction;
+import com.securingweb.vpn.audit.UserAuditEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -29,5 +33,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         printWriter.print(resBody);
         printWriter.flush();
         printWriter.close();
+
     }
 }
