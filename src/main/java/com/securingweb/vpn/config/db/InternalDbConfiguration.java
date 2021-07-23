@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -36,11 +37,13 @@ public class InternalDbConfiguration {
     private Environment env;
 
     @Bean
+    @Primary
     @ConfigurationProperties("spring.datasource.internal")
     public DataSource internalDataSource() {
         return new HikariDataSource();
     }
 
+    @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean internalEntityManagerFactory(
             EntityManagerFactoryBuilder builder,
@@ -59,6 +62,7 @@ public class InternalDbConfiguration {
         return emfb;
     }
 
+    @Primary
     @Bean
     public PlatformTransactionManager internalTransactionManager(
             @Qualifier("internalEntityManagerFactory") EntityManagerFactory internalEntityManagerFactory

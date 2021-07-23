@@ -1,22 +1,24 @@
 package com.securingweb.vpn.service;
 
 
+import com.securingweb.vpn.audit.UserAuditEvent;
 import com.securingweb.vpn.entity.SSRPortConfig;
 import com.securingweb.vpn.entity.VPNConfig;
 import com.securingweb.vpn.utility.JsonFileUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
 public class SSRPortService implements VPNConfig {
 
-
     //    @Value("${SSR.Path}")
     @Value("${SSR.Path}")
     String path;
-
 
     public Integer readPort() throws Exception {
 

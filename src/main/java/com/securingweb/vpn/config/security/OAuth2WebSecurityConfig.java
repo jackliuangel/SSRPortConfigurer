@@ -2,6 +2,7 @@ package com.securingweb.vpn.config.security;
 
 import com.securingweb.vpn.config.security.oauth2.CustomOAuth2AuthClientFilter;
 import com.securingweb.vpn.config.security.oauth2.CustomizedInMemoryOAuth2AuthorizedClientService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 @PropertySource("classpath:application-OAuth2Github.properties")
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //bean life cycle issue to need to set env by EnvironmentAware
 
@@ -75,6 +77,9 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        log.debug("Runing in OAuth2Github profile");
+
         http.authorizeRequests()
             .antMatchers(staticResources).permitAll()
             .antMatchers("/index").permitAll()

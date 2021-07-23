@@ -2,6 +2,7 @@ package com.securingweb.vpn.config.security;
 
 import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+@Slf4j
 @Profile("JSession")
 @Configuration
 @EnableWebSecurity
@@ -46,6 +48,9 @@ public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        log.debug("running in JSession profile");
+
         http.exceptionHandling()
             .accessDeniedHandler(new CustomAccessDeniedHandler())
             .authenticationEntryPoint(new CustomAuthenticationEntryPoint());

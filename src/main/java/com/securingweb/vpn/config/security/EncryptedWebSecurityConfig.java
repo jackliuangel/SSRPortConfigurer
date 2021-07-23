@@ -3,6 +3,7 @@ package com.securingweb.vpn.config.security;
 import com.securingweb.vpn.config.security.handler.CustomAccessDeniedHandler;
 import com.securingweb.vpn.config.security.handler.CustomAuthenticationEntryPoint;
 import com.securingweb.vpn.config.security.jwt.JwtRequestFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Profile("JWT")
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -38,6 +40,8 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        log.debug("Running in JWT profile");
 
         http.exceptionHandling()
             .accessDeniedHandler(new CustomAccessDeniedHandler())
