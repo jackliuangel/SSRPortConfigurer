@@ -9,6 +9,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -23,6 +24,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+//@Profile({"JWT", "OAuth2Github"})
+@Profile("!JSession")
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(

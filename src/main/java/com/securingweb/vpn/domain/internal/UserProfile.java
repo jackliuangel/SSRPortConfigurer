@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
 
-@Profile({"JWT", "OAuth2Github"})
+//@Profile({"JWT", "OAuth2Github"})
+@Profile("!JSession")
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,7 +29,6 @@ public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Type(type = "pg-uuid")
     private Long uuid;
 
     String clientId;

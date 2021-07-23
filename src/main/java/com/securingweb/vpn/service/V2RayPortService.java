@@ -33,32 +33,5 @@ public class V2RayPortService implements VPNConfig {
 
 
     }
-
-//
-//    private V2RayServerRootConfig readFromFile() throws Exception {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        // Read JSON file and convert to java object
-//        InputStream fileInputStream = new FileInputStream(path);
-//        V2RayServerRootConfig v2RayServerRootConfig = mapper.readValue(fileInputStream, V2RayServerRootConfig.class);
-//        fileInputStream.close();
-//        return v2RayServerRootConfig;
-//
-//    }
-//
-//
-//    private void writeFile(V2RayServerRootConfig v2RayServerRootConfig) throws Exception {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        String postJson = mapper.writeValueAsString(v2RayServerRootConfig);
-//        log.info("new config is {}", postJson);
-//
-//        // Save JSON string to file
-//        FileOutputStream fileOutputStream = new FileOutputStream(path);
-//        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-//        mapper.writeValue(fileOutputStream, v2RayServerRootConfig);
-//        fileOutputStream.close();
-//    }
 }
 

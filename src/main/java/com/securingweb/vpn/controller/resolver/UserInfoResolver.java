@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserInfoResolver implements HandlerMethodArgumentResolver {
 
-    @Autowired
+    @Autowired(required = false)
     private UserProfileRepository userProfileRepository;
 
     private ObjectMapper objectMapper = JacksonConfiguration.OBJECT_MAPPER;
@@ -63,11 +63,15 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
 
             String name = (String) oAuth2AuthenticationToken.getPrincipal().getAttributes().get("login");
 
-            UserProfile userProfile = userProfileRepository.findByOAuth2userName(oAuth2AuthenticationToken.getName());
+            String userName = "";
+            if (userProfileRepository != null) {
+                UserProfile userProfile = userProfileRepository.findByOAuth2userName(oAuth2AuthenticationToken.getName());
+                userName = userProfile.getName();
+            }
 
             return UserInfo.builder()
-                           .name(name + " as " + userProfile.getName())
-//                           .authority(userProfile.getAuthority()) //TODO: checkpoint()
+                           .name(name + " as " + userName)
+//                           .authority(userProfile.getAuthority()) //TODO: checkpoint(), fill with scope
                            .build();
         }
         return userInfo;

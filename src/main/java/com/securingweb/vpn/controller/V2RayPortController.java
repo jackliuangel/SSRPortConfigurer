@@ -32,19 +32,19 @@ public class V2RayPortController {
     @CachePut("v2Ray")
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
-    public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber, UserInfo currentUserInfo) throws Exception {
-        if (currentUserInfo.getAuthority().contains("admin")) {
-            log.info("V2Ray updateV2RayPort");
+    public String updateV2RayPort(@PathVariable("portNumber") Integer portNumber, UserInfo currentUserInfo) {
+        try {
+            log.debug("V2Ray updateV2RayPort");
             v2RayPortService.configPort(portNumber);
             String result = CommandUtil.run(V2RayRestartCommand);
 
             applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.UPDATE_PORT_SUCCESSFUL));
 
             return V2RayRestartCommand + "\n\n" + result;
-        } else {
+        } catch (Exception e) {
             applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.UPDATE_PORT_FAIL));
 
-            return "you are not admin so can not set V2Ray port. This info should be only shown to OAuth2 authentication";
+            return "update port failed";
         }
     }
 
@@ -54,7 +54,7 @@ public class V2RayPortController {
 
         applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.READ_PORT));
 
-        log.info("V2Ray getSSRPort invoked by {}", currentUserInfo);
+        log.debug("V2Ray getSSRPort invoked by {}", currentUserInfo);
         return v2RayPortService.readPort();
     }
 }

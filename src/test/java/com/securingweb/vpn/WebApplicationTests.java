@@ -1,7 +1,9 @@
 package com.securingweb.vpn;
 
-import com.securingweb.vpn.controller.SSRPortController;
+import com.securingweb.vpn.domain.common.UserAuditRepository;
 import com.securingweb.vpn.domain.internal.UserProfileRepository;
+import com.securingweb.vpn.service.SSRPortService;
+import com.securingweb.vpn.service.V2RayPortService;
 import lombok.var;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +28,29 @@ class WebApplicationTests {
 
     @Autowired
     UserProfileRepository userProfileRepository;
+    @Autowired
+    UserAuditRepository userAuditRepository;
 
     @Autowired
-    SSRPortController ssrPortController;
+    SSRPortService ssrPortService;
+
+    @Autowired
+    V2RayPortService v2RayPortService;
 
     @Test
     void contextLoads() {
-        assertThat(ssrPortController).isNotNull();
+        assertThat(ssrPortService).isNotNull();
+        assertThat(v2RayPortService).isNotNull();
         assertThat(userProfileRepository).isNotNull();
+        assertThat(userAuditRepository).isNotNull();
     }
 
     @Test
     void testDB() {
-        var list = userProfileRepository.findAll();
-        assertThat(list.size()).isGreaterThan(1);
+        var userProfiles = userProfileRepository.findAll();
+        assertThat(userProfiles.size()).isGreaterThan(1);
+
+        var userAudits = userAuditRepository.findAll();
+        assertThat(userAudits.size()).isGreaterThan(1);
     }
 }

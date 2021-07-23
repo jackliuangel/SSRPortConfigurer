@@ -24,7 +24,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Profile({"JWT", "OAuth2Github"})
+//@Profile({"JWT", "OAuth2Github"})
+@Profile("!JSession")
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(

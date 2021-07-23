@@ -33,19 +33,18 @@ public class SSRPortController {
     @CachePut("ssr")
     @GetMapping("/set/{portNumber}")
     @ResponseStatus(HttpStatus.CREATED)
-    public String updateSSRPort(@PathVariable("portNumber") Integer portNumber, UserInfo currentUserInfo) throws Exception {
-        //TODO: remove them
-        if (currentUserInfo.getAuthority().contains("admin")) {
-            log.info("SSR updateV2RayPort");
+    public String updateSSRPort(@PathVariable("portNumber") Integer portNumber, UserInfo currentUserInfo) {
+        try {
+            log.debug("SSR updateV2RayPort");
             ssrPortService.configPort(portNumber);
             String result = CommandUtil.run(SSRRestartCommand);
 
             applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.UPDATE_PORT_SUCCESSFUL));
 
             return SSRRestartCommand + "\n\n" + result;
-        } else {
+        } catch (Exception e) {
             applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.UPDATE_PORT_FAIL));
-            return "you are not admin so can not set SSR port. This info should be only shown to OAuth2 authentication";
+            return "update port failed ";
         }
     }
 
@@ -55,7 +54,7 @@ public class SSRPortController {
 
         applicationEventPublisher.publishEvent(new UserAuditEvent(currentUserInfo.getName(), UserAuditAction.READ_PORT));
 
-        log.info("SSR getSSRPort invoked by {}", currentUserInfo);
+        log.debug("SSR getSSRPort invoked by {}", currentUserInfo);
         return ssrPortService.readPort();
     }
 

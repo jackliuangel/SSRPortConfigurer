@@ -40,6 +40,8 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/jwtAuthenticate", method = RequestMethod.POST)
     public String createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password, Model model) throws Exception {
 
+        //TODO: need to reduce invoke times, otherwise there are 2 entry in DB
+
         //invokes loadUserDetails and PasswordEncoder to check the username and password
         authenticate(username, password);
 
