@@ -23,33 +23,23 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @Profile("JSession")
 @Configuration
 @EnableWebSecurity
-public class PlainWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class JSessionWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /**
-     * No need to save @Authentication in SecurityContext because it is done by Spring Security
-     * refer to
-     * @class SecurityContextPersistenceFilter
-     */
-
+    @Autowired
+    @Qualifier("customAuthenticationFailureHandler")
+    AuthenticationFailureHandler customAuthenticationFailureHandler;
 
     /**
      * for static image resource accessing, refer to
      *
      * @link https://stackoverflow.com/questions/44455900/spring-security-login-page-images
      */
-
-    @Autowired
-    @Qualifier("customAuthenticationFailureHandler")
-    AuthenticationFailureHandler customAuthenticationFailureHandler;
-
     private String[] staticResources = {
             "/images/**",
     };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        log.debug("running in JSession profile");
 
         http.exceptionHandling()
             .accessDeniedHandler(new CustomAccessDeniedHandler())

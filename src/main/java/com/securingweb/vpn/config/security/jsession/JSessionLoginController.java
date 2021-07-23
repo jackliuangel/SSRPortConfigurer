@@ -1,4 +1,4 @@
-package com.securingweb.vpn.config.security.handler;
+package com.securingweb.vpn.config.security.jsession;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

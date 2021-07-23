@@ -1,5 +1,8 @@
 package com.securingweb.vpn.controller.resolver;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.securingweb.vpn.config.JacksonConfiguration;
 import com.securingweb.vpn.domain.internal.UserProfile;
 import com.securingweb.vpn.domain.internal.UserProfileRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,8 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+    private ObjectMapper objectMapper = JacksonConfiguration.OBJECT_MAPPER;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.getParameter().getType() == UserInfo.class;
@@ -35,17 +40,13 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
             MethodParameter parameter,
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
-            WebDataBinderFactory binderFactory) {
-
-//        String requestPath = ((ServletWebRequest) webRequest)
-//                .getRequest()
-//                .getPathInfo();
+            WebDataBinderFactory binderFactory) throws JsonProcessingException {
 
         UserInfo userInfo = UserInfo.builder().build();
 
         Object principal = SecurityContextHolder.getContext().getAuthentication();
 
-        log.debug("principle = " + principal);
+        log.debug("principle = " + objectMapper.writeValueAsString(principal));
 
         if (principal instanceof UsernamePasswordAuthenticationToken) {
             // jsessionid and jwt both uses UsernamePasswordAuthenticationToken
@@ -56,6 +57,7 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
                            .authority(upat.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining()))
                            .build();
         }
+
         if (principal instanceof OAuth2AuthenticationToken) {
             OAuth2AuthenticationToken oAuth2AuthenticationToken = (OAuth2AuthenticationToken) principal;
 
@@ -65,9 +67,7 @@ public class UserInfoResolver implements HandlerMethodArgumentResolver {
 
             return UserInfo.builder()
                            .name(name + " as " + userProfile.getName())
-                           //use Port Configurer authority to overwrite Oauth2 authority
-                           //.authority(oAuth2AuthenticationToken.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining()))
-                           .authority(userProfile.getAuthority())
+//                           .authority(userProfile.getAuthority()) //TODO: checkpoint()
                            .build();
         }
         return userInfo;

@@ -83,15 +83,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                  * 可以取出， getAuthentication
                  */
 
-                /**
-                 * No need to save @Authentication in SecurityContext because it is done by Spring Security
-                 * refer to
-                 * @class SecurityContextPersistenceFilter
-                 */
-
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-
             }
         }
         chain.doFilter(request, response);

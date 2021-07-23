@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * extends from
  * @class InMemoryOAuth2AuthorizedClientService
+ * 作用是 管理registrationId=github的oauth信息，以及通过这个registration id 成功登陆的用户的信息
  */
 @Slf4j
 public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OAuth2AuthorizedClientService {
@@ -45,7 +46,8 @@ public final class CustomizedInMemoryOAuth2AuthorizedClientService implements OA
     public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient, Authentication principal) {
         Assert.notNull(authorizedClient, "authorizedClient cannot be null");
         Assert.notNull(principal, "principal cannot be null");
-        log.info("map this name to UserDetailService principal name and save : {} {}", authorizedClient.getClientRegistration(), principal.getName());
+        log.info("map authorizedClient(from github) to UserDetailService principal by name and save : {} {}", authorizedClient.getClientRegistration(), principal.getName());
+
         this.authorizedClients.put(this.getIdentifier(
                 authorizedClient.getClientRegistration(), principal.getName()), authorizedClient);
     }

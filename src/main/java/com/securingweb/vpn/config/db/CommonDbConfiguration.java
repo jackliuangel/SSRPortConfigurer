@@ -23,7 +23,6 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO: now all 3 profiles needs DB because it is autowired as the Spring JPA is included in the pom.xml
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(

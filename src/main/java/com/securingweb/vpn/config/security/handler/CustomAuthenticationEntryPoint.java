@@ -13,10 +13,6 @@ import java.util.HashMap;
 
 import static com.securingweb.vpn.config.JacksonConfiguration.OBJECT_MAPPER;
 
-/**
- * @author dax
- * @since 2019/11/6 22:11
- */
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override

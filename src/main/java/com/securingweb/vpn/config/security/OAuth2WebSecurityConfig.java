@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -23,6 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,41 +35,26 @@ import java.util.stream.Collectors;
 @EnableWebSecurity
 @Slf4j
 public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    //bean life cycle issue to need to set env by EnvironmentAware
 
     private static List<String> clients = Arrays.asList("github");
+
     private static String CLIENT_PROPERTY_KEY
             = "spring.security.oauth2.client.registration.";
+
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
-    /**
-     * No need to save @Authentication in SecurityContext because it is done by Spring Security
-     * refer to
-     *
-     * @class SecurityContextPersistenceFilter
-     */
 
     @Autowired
     @Qualifier("CustomOAuth2AuthClientFilter")
     private CustomOAuth2AuthClientFilter customOAuth2AuthClientFilter;
+
     private String[] staticResources = {
             "/images/**",
     };
 
-    /**
-     * it is used by
-     *
-     * @return
-     * @Class CustomOauth2AuthClientFilter
-     */
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomizedJdbcUserDetailsService();
-    }
-
     private ClientRegistration getRegistration(String client) {
+       //hard code the info here, should read it from property files
         String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
         return CommonOAuth2Provider.GITHUB.getBuilder(client)
                                           .clientId(clientId).clientSecret(clientSecret).build();
@@ -78,28 +63,24 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        log.debug("Runing in OAuth2Github profile");
-
         http.authorizeRequests()
             .antMatchers(staticResources).permitAll()
             .antMatchers("/index").permitAll()
             .antMatchers("/oauth2_login").permitAll()
             /**
-             * the authorization is managed by the controller because the permission is NOT injected in
+             * the oauth2 login user will have ROLE_USER only
              * @Class OAuth2AuthenticationToken
              */
-//            .antMatchers("/SSR/set/**").hasAuthority("admin")
-//            .antMatchers("/V2Ray/set/**").hasAuthority("admin")
-//            .antMatchers("/actuator/**").hasAuthority("viewer")
+//            .antMatchers("/actuator/**").hasAuthority("user")
+            .antMatchers("/SSR/set/**").denyAll()
+            .antMatchers("/V2Ray/set/**").denyAll()
             .anyRequest()
             .authenticated()
             .and()
             .addFilterAfter(customOAuth2AuthClientFilter, OAuth2LoginAuthenticationFilter.class)
             .oauth2Login()
-//TODO: should add authorities from UserDetailService to OAuth2AccessToken respose?
             .clientRegistrationRepository(clientRegistrationRepository())
             .authorizedClientService(authorizedClientService())
-
             .loginPage("/oauth2_login")
             .defaultSuccessUrl("/loginSuccess")
             .failureHandler(customAuthenticationFailureHandler)
@@ -117,8 +98,8 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         List<ClientRegistration> registrations = clients.stream()
-                                                        .map(c -> getRegistration(c))
-                                                        .filter(registration -> registration != null)
+                                                        .map(this::getRegistration)
+                                                        .filter(Objects::nonNull)
                                                         .collect(Collectors.toList());
 
         return new InMemoryClientRegistrationRepository(registrations);

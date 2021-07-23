@@ -26,22 +26,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @Slf4j
-public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     @Qualifier("customAuthenticationFailureHandler")
     AuthenticationFailureHandler customAuthenticationFailureHandler;
+
     String[] staticResources = {
             "/images/**",
     };
+
     @Autowired
     @Qualifier("jwtRequestFilter")
     private JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        log.debug("Running in JWT profile");
 
         http.exceptionHandling()
             .accessDeniedHandler(new CustomAccessDeniedHandler())
@@ -62,14 +62,13 @@ public class EncryptedWebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and()
             .formLogin()
-//           no need this line because we let jwtAuthenticate to redirect to /home with jwt token info.
-//            If uncomment this line, we need to redirect with JWT in header, which I have not done
-//            .defaultSuccessUrl("/home")
+//           no need this line because we let jwtAuthenticate to redirect to /loginSuccess with jwt token info.
+//            .defaultSuccessUrl("/loginSuccess")
             .failureHandler(customAuthenticationFailureHandler)
             .loginPage("/jwt_login")
             .permitAll()
             .and()
-            .logout()//will redirect to /loginPage with param
+            .logout()
             .permitAll()
         ;
     }

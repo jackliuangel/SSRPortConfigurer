@@ -19,6 +19,7 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
 
     @Autowired
     ApplicationEventPublisher applicationEventPublisher;
+
     @Autowired
     private UserProfileRepository userProfileRepository;
 
@@ -27,7 +28,9 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
         UserProfile userProfile = userProfileRepository.findByName(name);
 
         if (userProfile != null) {
-            applicationEventPublisher.publishEvent(new UserAuditEvent(name, UserAuditAction.LOGIN));
+            applicationEventPublisher.publishEvent(new UserAuditEvent(name, UserAuditAction.LOGIN_SUCCESSFUL));
+        } else {
+            applicationEventPublisher.publishEvent(new UserAuditEvent(name, UserAuditAction.LOGIN_FAIL));
         }
 
         return User
