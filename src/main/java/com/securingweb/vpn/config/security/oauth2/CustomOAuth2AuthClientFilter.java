@@ -33,7 +33,7 @@ public class CustomOAuth2AuthClientFilter extends OncePerRequestFilter {
 
         OAuth2AuthenticationToken currentAuthentication = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
-        if (currentAuthentication == null) { //not initialized
+        if (currentAuthentication == null) { //when not initialized
             chain.doFilter(request, response);
             return;
         }

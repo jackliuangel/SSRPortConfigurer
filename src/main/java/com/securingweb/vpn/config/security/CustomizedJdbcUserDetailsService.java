@@ -1,7 +1,8 @@
 package com.securingweb.vpn.config.security;
 
 import com.securingweb.vpn.audit.UserAuditAction;
-import com.securingweb.vpn.audit.UserAuditEvent;
+import com.securingweb.vpn.audit.annotation.Audit;
+import com.securingweb.vpn.audit.annotation.AuditField;
 import com.securingweb.vpn.domain.internal.UserProfile;
 import com.securingweb.vpn.domain.internal.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class CustomizedJdbcUserDetailsService implements UserDetailsService {
 
     @Autowired
-    ApplicationEventPublisher applicationEventPublisher;
-
-    @Autowired
     private UserProfileRepository userProfileRepository;
 
     @Override
@@ -28,9 +26,9 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
         UserProfile userProfile = userProfileRepository.findByName(name);
 
         if (userProfile != null) {
-            applicationEventPublisher.publishEvent(new UserAuditEvent(name, UserAuditAction.LOGIN_SUCCESSFUL));
+            loginSuccessAction(name);
         } else {
-            applicationEventPublisher.publishEvent(new UserAuditEvent(name, UserAuditAction.LOGIN_FAIL));
+            loginFailAction(name);
         }
 
         return User
@@ -38,5 +36,13 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
                 .password(userProfile.getPassword())
                 .authorities(userProfile.getAuthority())
                 .build();
+    }
+
+    @Audit(UserAuditAction.LOGIN_FAIL)
+    private void loginFailAction(@AuditField String userName) {
+    }
+
+    @Audit(UserAuditAction.LOGIN_SUCCESSFUL)
+    private void loginSuccessAction(@AuditField String userName) {
     }
 }
