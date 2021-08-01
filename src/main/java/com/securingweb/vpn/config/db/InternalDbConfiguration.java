@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate5.SpringBeanContainer;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -69,5 +70,12 @@ public class InternalDbConfiguration {
             @Qualifier("internalEntityManagerFactory") EntityManagerFactory internalEntityManagerFactory
     ) {
         return new JpaTransactionManager(internalEntityManagerFactory);
+    }
+
+    @Primary
+    @Bean
+    @Qualifier("internalJdbcTemplate")
+    public JdbcTemplate internalJdbcTemplate() {
+        return new JdbcTemplate(internalDataSource());
     }
 }

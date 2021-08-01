@@ -21,16 +21,18 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "user_audit")
+@Table(name = "USER_AUDIT")
 @EntityListeners(AuditingEntityListener.class)
 public class UserAudit {
-    @Column(nullable = false)
+
+    @Column
+    @NotNull
     String userName;
 
     //    @CreationTimestamp vs @CreatedDate
     //    不用hibernate的audit，用spring data
     @CreatedDate
-    @Column(columnDefinition = "timestamp with timezone")
+    @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private LocalDateTime lastUpdated; //it is created and then should not be updated again
 
     @NotNull

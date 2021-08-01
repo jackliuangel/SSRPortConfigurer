@@ -1,6 +1,8 @@
 package com.securingweb.vpn.controller;
 
 
+import com.securingweb.vpn.audit.UserAuditAction;
+import com.securingweb.vpn.audit.annotation.Audit;
 import com.securingweb.vpn.controller.resolver.UserInfo;
 import com.securingweb.vpn.service.SSRPortService;
 import com.securingweb.vpn.utility.CommandUtil;
@@ -44,6 +46,7 @@ public class SSRPortController extends AuditableController {
 
     @Cacheable("ssr")
     @GetMapping("/")
+    @Audit(UserAuditAction.READ_PORT)
     public Integer getSSRPort(UserInfo currentUserInfo) throws Exception {
 
         readPortAction(currentUserInfo.getName());

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 //@Profile({"JWT", "OAuth2Github"})
 @Profile("!JSession")
@@ -16,23 +17,26 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="user_profile")
+@Table(name = "USER_PROFILE")
 public class UserProfile {
-    @Column(nullable = false)
+    @NotNull
+    @Column
     String name;
 
-    @Column(nullable = false)
+    @Column
     String authority;
 
-    @Column(nullable = false)
+    @Column
     String password;
+
+    @Column
+    String clientId;
+
+    @Column
+    String oAuth2userName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
-
-    String clientId;
-
-    String oAuth2userName;
 
 }

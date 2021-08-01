@@ -7,12 +7,15 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -21,13 +24,13 @@ import java.util.Map;
 
 @Slf4j
 @Aspect
-@ComponentScan
+@Component
 public class AuditAspect {
 
     @Autowired
     ApplicationEventPublisher applicationEventPublisher;
 
-    @AfterReturning
+    @AfterReturning("@annotation(com.securingweb.vpn.audit.annotation.Audit)")
     public void audit(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();

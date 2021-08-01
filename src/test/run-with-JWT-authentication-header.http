@@ -1,5 +1,4 @@
 GET http://127.0.0.1:8080/SSR/
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbmdlbCIsImV4cCI6MTYyNDE5NDMzOCwiaWF0IjoxNjI0MTc2MzM4fQ.0rKJgoekPv5liLjDS8ZANlSYeUJgnNVQ5HHWkXtnUxZcexKmfJt2N-6f1hsRyWFEIrwHhdQRifBeK4y9o3tULQ
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWNrIiwiZXhwIjoxNjI3NzU4Mzg5LCJpYXQiOjE2Mjc3NTc3ODl9.YeV7wMC7ABRlRKHXLGXSD0FdHfmXSimgwDHlSR_Hl_rAcSWrkeBZVIBqI0Lh33rqQiNl-hlbkruX6lN0dstBhw
 ###
 
