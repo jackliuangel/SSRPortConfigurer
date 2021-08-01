@@ -2,6 +2,7 @@ package com.securingweb.vpn.config.security;
 
 import com.securingweb.vpn.audit.UserAuditAction;
 import com.securingweb.vpn.audit.UserAuditEvent;
+import com.securingweb.vpn.controller.resolver.UserInfo;
 import com.securingweb.vpn.domain.internal.UserProfile;
 import com.securingweb.vpn.domain.internal.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,9 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
         UserProfile userProfile = userProfileRepository.findByName(name);
 
         if (userProfile != null) {
-            loginSuccessAction(name);
+            loginSuccessAction(UserInfo.ofUserProfile(userProfile));
         } else {
-            loginFailAction(name);
+            loginFailAction(UserInfo.ofName(name));
         }
 
         return User
@@ -40,11 +41,11 @@ public class CustomizedJdbcUserDetailsService implements UserDetailsService {
                 .build();
     }
 
-    private void loginFailAction(String userName) {
-        applicationEventPublisher.publishEvent(new UserAuditEvent(userName, UserAuditAction.LOGIN_FAIL, null));
+    private void loginFailAction(UserInfo userInfo) {
+        applicationEventPublisher.publishEvent(new UserAuditEvent(userInfo, UserAuditAction.LOGIN_FAIL, null));
     }
 
-    private void loginSuccessAction(String userName) {
-        applicationEventPublisher.publishEvent(new UserAuditEvent(userName, UserAuditAction.LOGIN_SUCCESSFUL, null));
+    private void loginSuccessAction(UserInfo userInfo) {
+        applicationEventPublisher.publishEvent(new UserAuditEvent(userInfo, UserAuditAction.LOGIN_SUCCESSFUL, null));
     }
 }

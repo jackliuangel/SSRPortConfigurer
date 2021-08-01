@@ -25,15 +25,4 @@ public class UserAuditEvent {
             comments = "";
         }
     }
-
-    public UserAuditEvent(String userName, UserAuditAction userAuditAction, Map<String, String> data) {
-        this.userName = userName;
-        this.userAuditAction = userAuditAction;
-        if (data != null) {
-            comments = data.toString();
-        } else {
-            comments = "";
-        }
-    }
-
 }

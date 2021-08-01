@@ -79,6 +79,6 @@ public class AuditAspect {
 //        String resultValue = String.valueOf(joinPoint.getTarget());
 //        auditFieldData.put(resultKey, resultValue);
 
-        return auditFieldData.isEmpty()?null:auditFieldData;
+        return auditFieldData.isEmpty() ? null : auditFieldData;
     }
 }

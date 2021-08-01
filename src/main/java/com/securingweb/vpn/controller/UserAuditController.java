@@ -7,12 +7,14 @@ import com.securingweb.vpn.controller.resolver.UserInfo;
 import com.securingweb.vpn.domain.common.UserAudit;
 import com.securingweb.vpn.domain.common.UserAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@Profile("!JSession")
 @RestController
 @RequestMapping("/UserAudit")
 class UserAuditController {
