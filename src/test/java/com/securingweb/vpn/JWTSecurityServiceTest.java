@@ -77,7 +77,7 @@ class JWTSecurityServiceTest {
                 .password("12345");
 
         mockMvc.perform(login)
-               .andExpect(unauthenticated());
+               .andExpect(unauthenticated());//TODO: jwtAuthenticate is NOT called, why?
     }
 
     @Test

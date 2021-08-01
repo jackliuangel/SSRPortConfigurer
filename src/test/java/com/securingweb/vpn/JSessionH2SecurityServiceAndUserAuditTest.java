@@ -5,6 +5,7 @@ import com.securingweb.vpn.domain.common.UserAudit;
 import com.securingweb.vpn.domain.common.UserAuditRepository;
 import com.securingweb.vpn.service.SSRPortService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
@@ -44,6 +47,11 @@ class JSessionH2SecurityServiceAndUserAuditTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @AfterEach
+    void cleanUp(){
+        userAuditRepository.deleteAll();
+    }
+
     @Test
     void loginWithValidUserThenAuthenticated() throws Exception {
         SecurityMockMvcRequestBuilders.FormLoginRequestBuilder login = formLogin("/jsession_login")
@@ -52,7 +60,7 @@ class JSessionH2SecurityServiceAndUserAuditTest {
 
         mockMvc.perform(login)
                .andExpect(authenticated());
-
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("jack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
@@ -69,7 +77,7 @@ class JSessionH2SecurityServiceAndUserAuditTest {
 
         mockMvc.perform(login)
                .andExpect(unauthenticated());
-
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("testJack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
@@ -86,13 +94,13 @@ class JSessionH2SecurityServiceAndUserAuditTest {
         mockMvc.perform(get("/SSR/"))
                .andDo(print())
                .andExpect(status().isOk());
-
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("jack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
                 .as("latest user audit record")
                 .hasFieldOrPropertyWithValue("action", UserAuditAction.READ_PORT)
-         .hasFieldOrPropertyWithValue("comments","");
+                .hasFieldOrPropertyWithValue("comments", "");
     }
 
     @Test
@@ -103,13 +111,13 @@ class JSessionH2SecurityServiceAndUserAuditTest {
         mockMvc.perform(get("/SSR/set/4567"))
                .andDo(print())
                .andExpect(status().isCreated());
-
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("jack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
                 .as("latest user audit record")
                 .hasFieldOrPropertyWithValue("action", UserAuditAction.UPDATE_PORT_SUCCESSFUL)
-                .hasFieldOrPropertyWithValue("comments","{portNumber=4567}");
+                .hasFieldOrPropertyWithValue("comments", "{portNumber=4567}");
     }
 
     @Test
@@ -120,13 +128,13 @@ class JSessionH2SecurityServiceAndUserAuditTest {
         mockMvc.perform(get("/V2Ray/"))
                .andDo(print())
                .andExpect(status().isOk());
-
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("jack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
                 .as("latest user audit record")
                 .hasFieldOrPropertyWithValue("action", UserAuditAction.READ_PORT)
-                .hasFieldOrPropertyWithValue("comments","");
+                .hasFieldOrPropertyWithValue("comments", "");
     }
 
     @Test
@@ -138,11 +146,12 @@ class JSessionH2SecurityServiceAndUserAuditTest {
                .andDo(print())
                .andExpect(status().isCreated());
 
+        await().atLeast(1, TimeUnit.SECONDS);
         List<UserAudit> userAudits = userAuditRepository.findAllByUserName("jack");
         userAudits.sort(Comparator.comparing(UserAudit::getLastUpdated));
         assertThat(userAudits.get(0))
                 .as("latest user audit record")
                 .hasFieldOrPropertyWithValue("action", UserAuditAction.UPDATE_PORT_SUCCESSFUL)
-                .hasFieldOrPropertyWithValue("comments","{portNumber=4567}");
+                .hasFieldOrPropertyWithValue("comments", "{portNumber=4567}");
     }
 }

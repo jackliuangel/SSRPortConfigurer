@@ -55,7 +55,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private ClientRegistration getRegistration(String client) {
-       //hard code the info here, should read it from property files
+       //TODO: hard code the info here, should read it from property files
         String clientId = "736c9357b7c393839817", clientSecret = "5661b767b1e0a64ed16e0a129547cd359bae3062";
         return CommonOAuth2Provider.GITHUB.getBuilder(client)
                                           .clientId(clientId).clientSecret(clientSecret).build();

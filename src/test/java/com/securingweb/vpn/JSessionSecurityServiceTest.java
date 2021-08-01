@@ -51,7 +51,7 @@ class JSessionSecurityServiceTest {
                 .password("1234-ERROR");
 
         mockMvc.perform(login)
-               .andExpect(unauthenticated());  //TODO: jwtAuthenticate is NOT called, why?
+               .andExpect(unauthenticated());
     }
 
     @Test
