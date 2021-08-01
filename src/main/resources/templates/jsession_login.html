@@ -5,7 +5,15 @@
     <title>VPN port configurer with Spring Security</title>
 </head>
 <body>
-<h1>Sign in and save JSessionID, No Database. No userAction audit history</h1>
+<h1>Sign in and save JSessionID, Using H2 in memory DB or No Database.
+
+</h1>
+<p>
+    if with H2 DB, it support userAction audit history, but not persisted
+</p>
+<p>
+    if without DB, no user audit history is supported.
+</p>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>

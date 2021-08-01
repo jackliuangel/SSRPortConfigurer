@@ -28,6 +28,7 @@ public class AuditEventHandler {
 
         UserAudit userAuditEntry = UserAudit.builder().action(userAuditEvent.getUserAuditAction())
                                             .userName(userAuditEvent.getUserName())
+                                            .comments(userAuditEvent.getComments())
                                             .build();
 
         userAuditRepository.save(userAuditEntry);

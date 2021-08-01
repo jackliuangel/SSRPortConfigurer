@@ -1,4 +1,13 @@
 GET http://127.0.0.1:8080/SSR/
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWNrIiwiZXhwIjoxNjI3NzU4Mzg5LCJpYXQiOjE2Mjc3NTc3ODl9.YeV7wMC7ABRlRKHXLGXSD0FdHfmXSimgwDHlSR_Hl_rAcSWrkeBZVIBqI0Lh33rqQiNl-hlbkruX6lN0dstBhw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWNrIiwiZXhwIjoxNjI3NzkzNjA2LCJpYXQiOjE2Mjc3OTMwMDZ9.6e6m6iAaIbO1H8ThDOiRuAOZ-JgpjFyHxx4Jxl1xUEAHvp6a523HcOvSExSyRcA09SfH-teLEz9_RwAPKyJ1LQ
 ###
+
+GET http://127.0.0.1:8080/SSR/set/4567
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWNrIiwiZXhwIjoxNjI3NzkzNjA2LCJpYXQiOjE2Mjc3OTMwMDZ9.6e6m6iAaIbO1H8ThDOiRuAOZ-JgpjFyHxx4Jxl1xUEAHvp6a523HcOvSExSyRcA09SfH-teLEz9_RwAPKyJ1LQ
+###
+
+GET http://127.0.0.1:8080/UserAudit/
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYWNrIiwiZXhwIjoxNjI3NzkzNjA2LCJpYXQiOjE2Mjc3OTMwMDZ9.6e6m6iAaIbO1H8ThDOiRuAOZ-JgpjFyHxx4Jxl1xUEAHvp6a523HcOvSExSyRcA09SfH-teLEz9_RwAPKyJ1LQ
+###
+
 

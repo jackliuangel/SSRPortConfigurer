@@ -7,4 +7,5 @@ public enum UserAuditAction {
     READ_PORT,
     UPDATE_PORT_SUCCESSFUL,
     UPDATE_PORT_FAIL,
+    VIEW_AUDIT_HISTORY
 }

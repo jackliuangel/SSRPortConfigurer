@@ -43,4 +43,7 @@ public class UserAudit {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long uuid;
 
+    @Column
+    String comments;
+
 }
