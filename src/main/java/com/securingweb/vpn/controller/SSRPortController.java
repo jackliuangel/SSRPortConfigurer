@@ -5,12 +5,12 @@ import com.securingweb.vpn.audit.UserAuditAction;
 import com.securingweb.vpn.audit.annotation.Audit;
 import com.securingweb.vpn.audit.annotation.AuditActor;
 import com.securingweb.vpn.audit.annotation.AuditField;
+import com.securingweb.vpn.entity.property.SSRProperties;
 import com.securingweb.vpn.controller.resolver.UserInfo;
 import com.securingweb.vpn.service.SSRPortService;
 import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
@@ -25,8 +25,8 @@ public class SSRPortController {
     @Autowired
     SSRPortService ssrPortService;
 
-    @Value("${SSR.Command}")
-    String SSRRestartCommand;
+    @Autowired
+    SSRProperties ssrProperties;
 
     @CachePut("ssr")
     @GetMapping("/set/{portNumber}")
@@ -36,9 +36,9 @@ public class SSRPortController {
         try {
             log.debug("SSR updateV2RayPort");
             ssrPortService.configPort(portNumber);
-            String result = CommandUtil.run(SSRRestartCommand);
+            String result = CommandUtil.run(ssrProperties.getCommand());
 
-            return SSRRestartCommand + "\n\n" + result;
+            return ssrProperties.getCommand() + "\n\n" + result;
         } catch (Exception e) {
             return "update port failed ";
         }

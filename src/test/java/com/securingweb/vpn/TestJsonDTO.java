@@ -9,6 +9,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TestJsonDTO {
+
+    int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @JsonProperty("isGraduated")
     Boolean isGraduated;
 

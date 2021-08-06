@@ -1,9 +1,9 @@
 /**
  * Copyright 2020 bejson.com
  */
-package com.securingweb.vpn.entity.V2RayConfig;
+package com.securingweb.vpn.entity.dto.V2RayConfig;
 
-import com.securingweb.vpn.entity.VPNConfig;
+import com.securingweb.vpn.entity.dto.VPNConfig;
 import lombok.Data;
 
 import java.util.List;

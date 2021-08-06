@@ -1,8 +1,8 @@
 package com.securingweb.vpn;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.securingweb.vpn.entity.SSRPortConfig;
-import com.securingweb.vpn.entity.V2RayConfig.V2RayServerRootConfig;
+import com.securingweb.vpn.entity.dto.SSRPortConfig;
+import com.securingweb.vpn.entity.dto.V2RayConfig.V2RayServerRootConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -48,9 +48,13 @@ public class ConfigDTOTest {
                           .hasFieldOrPropertyWithValue("isGraduated", true);
 
 
-        TestJsonDTO testJsonDTO = new TestJsonDTO(true);
+        TestJsonDTO testJsonDTO = new TestJsonDTO(8, true);
         String json = mapper.writeValueAsString(testJsonDTO);
         assertThat(json).isNotBlank();
+
+        ComparableTestJsonDTO comparableConfig = new ComparableTestJsonDTO(config);
+        ComparableTestJsonDTO comparableTestJsonDTO = new ComparableTestJsonDTO(testJsonDTO);
+        assertThat(comparableTestJsonDTO).isGreaterThan(comparableConfig);
 
     }
 

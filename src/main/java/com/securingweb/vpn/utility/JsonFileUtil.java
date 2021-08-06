@@ -1,7 +1,7 @@
 package com.securingweb.vpn.utility;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.securingweb.vpn.entity.VPNConfig;
+import com.securingweb.vpn.entity.dto.VPNConfig;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 

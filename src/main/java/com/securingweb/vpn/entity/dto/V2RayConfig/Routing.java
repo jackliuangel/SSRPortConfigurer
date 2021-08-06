@@ -1,7 +1,7 @@
 /**
  * Copyright 2020 bejson.com
  */
-package com.securingweb.vpn.entity.V2RayConfig;
+package com.securingweb.vpn.entity.dto.V2RayConfig;
 
 import lombok.Data;
 
@@ -14,10 +14,8 @@ import java.util.List;
  * @website http://www.bejson.com/java2pojo/
  */
 @Data
-public class Rules {
+public class Routing {
 
-    private String type;
-    private List<String> ip;
-    private String outboundTag;
+    private List<Rules> rules;
 
 }

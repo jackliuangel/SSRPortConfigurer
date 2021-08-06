@@ -1,4 +1,4 @@
-package com.securingweb.vpn.entity;
+package com.securingweb.vpn.entity.dto;
 
 
 import lombok.Data;

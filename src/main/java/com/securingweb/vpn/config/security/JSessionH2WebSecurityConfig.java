@@ -37,8 +37,10 @@ public class JSessionH2WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String[] staticResources = {
             "/images/**",
             "/favicon.ico",
-            "/h2-console/**"
+            "/h2-console/**",
+            "/CORSDemo/**"
     };
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -47,10 +49,12 @@ public class JSessionH2WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
         http
-                .csrf().disable()
+                .cors()
+                .and() //enable CORS to demo CORS
                 .authorizeRequests()
                 .antMatchers(staticResources).permitAll()
                 .antMatchers("/index").permitAll()
+                .antMatchers("/cors").permitAll()
                 .antMatchers("/SSR/set/**").hasAuthority("admin")
                 .antMatchers("/V2Ray/set/**").hasAuthority("admin")
                 .antMatchers("/actuator/**").hasAuthority("viewer")

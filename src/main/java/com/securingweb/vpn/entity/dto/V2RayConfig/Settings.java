@@ -1,9 +1,11 @@
 /**
  * Copyright 2020 bejson.com
  */
-package com.securingweb.vpn.entity.V2RayConfig;
+package com.securingweb.vpn.entity.dto.V2RayConfig;
 
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Auto-generated: 2020-02-23 0:41:28
@@ -12,10 +14,8 @@ import lombok.Data;
  * @website http://www.bejson.com/java2pojo/
  */
 @Data
-public class Outbounds {
+public class Settings {
 
-    private String protocol;
-    private Settings settings;
-    private String tag;
+    private List<Clients> clients;
 
 }
