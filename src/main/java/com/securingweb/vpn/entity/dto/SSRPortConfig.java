@@ -2,6 +2,7 @@ package com.securingweb.vpn.entity.dto;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
 
 @Data
