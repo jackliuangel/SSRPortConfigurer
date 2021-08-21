@@ -7,6 +7,7 @@ import com.securingweb.vpn.audit.annotation.AuditActor;
 import com.securingweb.vpn.audit.annotation.AuditField;
 import com.securingweb.vpn.entity.property.SSRProperties;
 import com.securingweb.vpn.controller.resolver.UserInfo;
+import com.securingweb.vpn.metrics.MetricsTracker;
 import com.securingweb.vpn.service.SSRPortService;
 import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,9 @@ public class SSRPortController {
 
     @Autowired
     SSRProperties ssrProperties;
+
+    @Autowired
+    MetricsTracker metricsTracker;
 
     @CachePut("ssr")
     @GetMapping("/set/{portNumber}")
@@ -50,6 +54,7 @@ public class SSRPortController {
     public Integer getSSRPort(@AuditActor UserInfo currentUserInfo) throws Exception {
 
         log.debug("SSR getSSRPort invoked by {}", currentUserInfo);
+        metricsTracker.recordQueryCounts(1, currentUserInfo.getName(), "SSR");
         return ssrPortService.readPort();
     }
 

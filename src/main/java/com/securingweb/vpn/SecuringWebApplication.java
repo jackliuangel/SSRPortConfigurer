@@ -9,6 +9,7 @@ import java.io.IOException;
 
 @EnableCaching
 @SpringBootApplication
+//@EnablePrometheusMetrics
 public class SecuringWebApplication {
 
     public static void main(String[] args) {
@@ -23,5 +24,4 @@ public class SecuringWebApplication {
         }
         ctx.close();
     }
-
 }

@@ -34,7 +34,8 @@ public class JWTWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     String[] staticResources = {
             "/images/**",
-            "/favicon.ico"
+            "/favicon.ico",
+            "/actuator/*",
     };
 
     @Autowired

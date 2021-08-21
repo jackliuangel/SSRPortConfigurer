@@ -51,7 +51,8 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private String[] staticResources = {
             "/images/**",
-            "/favicon.ico"
+            "/favicon.ico",
+            "/actuator/*",
     };
 
     private ClientRegistration getRegistration(String client) {

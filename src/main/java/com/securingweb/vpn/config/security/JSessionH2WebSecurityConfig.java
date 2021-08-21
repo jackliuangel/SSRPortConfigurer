@@ -38,7 +38,8 @@ public class JSessionH2WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/favicon.ico",
             "/h2-console/**",
-            "/CORSDemo/**"
+            "/CORSDemo/**",
+            "/actuator/*",
     };
 
 

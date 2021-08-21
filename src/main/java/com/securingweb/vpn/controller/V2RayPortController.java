@@ -7,6 +7,7 @@ import com.securingweb.vpn.audit.annotation.AuditActor;
 import com.securingweb.vpn.audit.annotation.AuditField;
 import com.securingweb.vpn.entity.property.V2RayProperties;
 import com.securingweb.vpn.controller.resolver.UserInfo;
+import com.securingweb.vpn.metrics.MetricsTracker;
 import com.securingweb.vpn.service.V2RayPortService;
 import com.securingweb.vpn.utility.CommandUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class V2RayPortController{
 
     @Autowired
     V2RayProperties v2RayProperties;
+
+    @Autowired
+    MetricsTracker metricsTracker;
 
     @CachePut("v2Ray")
     @GetMapping("/set/{portNumber}")
@@ -51,6 +55,7 @@ public class V2RayPortController{
     public Integer getV2RayPort(@AuditActor  UserInfo currentUserInfo) throws Exception {
 
         log.debug("V2Ray getSSRPort invoked by {}", currentUserInfo);
+        metricsTracker.recordQueryCounts(1, currentUserInfo.getName(), "V2Ray");
         return v2RayPortService.readPort();
     }
 
