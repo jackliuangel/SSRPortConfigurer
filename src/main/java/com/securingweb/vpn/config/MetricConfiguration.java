@@ -3,10 +3,6 @@ package com.securingweb.vpn.config;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-//@EnablePrometheusMetrics
 public class MetricConfiguration {
-//    @Bean
-//    public MeterBinder processMemoryMetrics(){
-//        return new ProcessMemoryMetrics();
-//    }
+//TODO: define  post init spring metrics actions here, such as web tag
 }

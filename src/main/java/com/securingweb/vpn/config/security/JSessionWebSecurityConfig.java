@@ -37,7 +37,7 @@ public class JSessionWebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String[] staticResources = {
             "/images/**",
             "/favicon.ico",
-            "/actuator/*",
+//            "/actuator/*",
     };
 
     @Override

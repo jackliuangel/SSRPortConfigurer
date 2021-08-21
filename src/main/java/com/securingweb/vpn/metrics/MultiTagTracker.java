@@ -20,7 +20,6 @@ public class MultiTagTracker {
 
     private String[] tags;
 
-    //    TODO: how to inject registry at constructor but also set counter name and tags? @ZF
     public MultiTagTracker(MeterRegistry registry, String counterName, String... tags) {
         this.registry = registry;
         this.counterName = counterName;

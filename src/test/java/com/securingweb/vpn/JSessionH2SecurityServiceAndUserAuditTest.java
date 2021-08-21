@@ -3,6 +3,7 @@ package com.securingweb.vpn;
 import com.securingweb.vpn.audit.UserAuditAction;
 import com.securingweb.vpn.domain.common.UserAudit;
 import com.securingweb.vpn.domain.common.UserAuditRepository;
+import com.securingweb.vpn.metrics.MetricsTracker;
 import com.securingweb.vpn.service.SSRPortService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +17,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Comparator;
 import java.util.List;
@@ -43,6 +45,9 @@ class JSessionH2SecurityServiceAndUserAuditTest {
 
     @Autowired
     UserAuditRepository userAuditRepository;
+
+    @Autowired
+    MetricsTracker metricsTracker;
 
     @Autowired
     private MockMvc mockMvc;
@@ -153,5 +158,19 @@ class JSessionH2SecurityServiceAndUserAuditTest {
                 .as("latest user audit record")
                 .hasFieldOrPropertyWithValue("action", UserAuditAction.UPDATE_PORT_SUCCESSFUL)
                 .hasFieldOrPropertyWithValue("comments", "{portNumber=4567}");
+    }
+
+    @Test
+    @WithMockUser(username = "jack", password = "603", authorities = "admin")
+    void testMetrics() throws Exception {
+
+        mockMvc.perform(get("/V2Ray/"))
+               .andExpect(status().isOk());
+
+        await().atLeast(3, TimeUnit.SECONDS);
+        MvcResult mockMvcResult = mockMvc.perform(get("/actuator/prometheus"))
+                                         .andExpect(status().isOk())
+                                         .andReturn();
+        assertThat(mockMvcResult.getResponse().getContentAsString()).contains("queryCounter_total{type=\"V2Ray\",uid=\"jack\",}");
     }
 }

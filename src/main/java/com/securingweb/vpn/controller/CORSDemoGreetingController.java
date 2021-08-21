@@ -18,7 +18,6 @@ public class CORSDemoGreetingController {
     @CrossOrigin
     @GetMapping("/cors")
     public Greeting greeting(@RequestParam(required = false, defaultValue = "World") String name) {
-        Greeting greeting = new Greeting(counter.incrementAndGet(), String.format(template, name));
-        return greeting;
+        return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 }

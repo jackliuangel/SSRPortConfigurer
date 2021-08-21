@@ -2,6 +2,7 @@ package com.securingweb.vpn;
 
 import com.securingweb.vpn.domain.common.UserAuditRepository;
 import com.securingweb.vpn.domain.internal.UserProfileRepository;
+import com.securingweb.vpn.metrics.MetricsTracker;
 import com.securingweb.vpn.service.SSRPortService;
 import com.securingweb.vpn.service.V2RayPortService;
 import lombok.var;
@@ -48,6 +49,9 @@ class WebApplicationTests {
     @Qualifier("internalJdbcTemplate")
     JdbcTemplate internalJdbcTemplate;
 
+    @Autowired
+    MetricsTracker metricsTracker;
+
     //TODO: support @Timeout(4) in JUnit5
 //    @Timeout(4)
     @Test
@@ -58,6 +62,13 @@ class WebApplicationTests {
         assertThat(userAuditRepository).isNotNull();
         assertThat(commonJdbcTemplate).isNotNull();
         assertThat(internalJdbcTemplate).isNotNull();
+        assertThat(metricsTracker).isNotNull();
+    }
+
+    @Test
+    void testMetrics(){
+        metricsTracker.recordQueryCounts(1,"angel","v2ray");
+        
     }
 
 
