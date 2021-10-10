@@ -38,7 +38,7 @@ public class JSessionWebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/images/**",
             "/favicon.ico",
             "/feedback/**",
-//            "/actuator/*",
+            "/actuator/*"
     };
 
     @Override

@@ -45,8 +45,10 @@ public class MultiTagTracker {
                              .description("multi tag counter " + Arrays.toString(tags))
                              .register(registry);
             multiTagCounters.put(values, counter);
-
         }
-        counter.increment(count);
+
+        for (int i = 0; i < count; i++) {
+            counter.increment();
+        }
     }
 }
